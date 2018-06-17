@@ -1,0 +1,4 @@
+hbase_table:
+  name: hbase_local
+  cf: family
+  cl: qualifier
