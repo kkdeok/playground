@@ -1,3 +1,4 @@
 rootProject.name = 'exercise'
 include 'hbase'
+include 'socket'
 
