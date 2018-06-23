@@ -14,8 +14,7 @@ import static org.junit.Assert.*;
 public class ExecutorTest {
 
     @Test
-    public void testExecutor() {
-
+    public void testFixedThreadPool() {
         ExecutorService service = Executors.newFixedThreadPool(2);
 
         service.submit(new RunnableTask(1));
@@ -27,5 +26,18 @@ public class ExecutorTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testCachedThreadPool() {
+        // CachedThreadPool doesn't get thread num as a parameter.
+        // It creates new thread as need.
+        // It will reuse previously constructed threads when they are available.
+        ExecutorService service = Executors.newCachedThreadPool();
+        service.submit(new RunnableTask(1));
+        service.submit(new RunnableTask(2));
+        service.submit(new RunnableTask(3));
+
+        service.shutdown();
     }
 }
