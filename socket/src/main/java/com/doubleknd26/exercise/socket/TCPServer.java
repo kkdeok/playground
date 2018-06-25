@@ -7,11 +7,11 @@ import java.net.Socket;
 /**
  * Created by Kideok Kim on 17/06/2018.
  */
-public class Server {
+public class TCPServer {
     private static final int PORT = 9001;
 
     public void start() {
-        System.out.println("server is running");
+        System.out.println("TCP server is running");
         try (ServerSocket listener = new ServerSocket(PORT)) {
             while (true) {
                 try (Socket socket = listener.accept();
@@ -22,9 +22,9 @@ public class Server {
 
                     String clientMessage = dis.readUTF();
                     if ("hello server".equals(clientMessage)) {
-                        dos.writeUTF("hello client");
+                        dos.writeUTF(ResponseMessage.HELLO_CLIENT.getMessage());
                     } else {
-                        dos.writeUTF("unexpected message");
+                        dos.writeUTF(ResponseMessage.UNEXPECTED.getMessage());
                     }
                     dos.flush();
                 }
@@ -35,7 +35,7 @@ public class Server {
     }
 
     public static void main(String[] args) {
-        Server server = new Server();
+        TCPServer server = new TCPServer();
         server.start();
     }
 }

@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Kideok Kim on 17/06/2018.
  */
-public class ServerTest {
+public class TCPServerTest {
     private static ExecutorService serverExecutor;
     private static final String HOST = "localhost";
     private static final int PORT = 9001;
@@ -19,13 +19,14 @@ public class ServerTest {
     @BeforeClass
     public static void setUpClass() {
         serverExecutor = Executors.newFixedThreadPool(1);
-        serverExecutor.submit(() -> new Server().start());
+        serverExecutor.submit(() -> new TCPServer().start());
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        serverExecutor.shutdown();
         if (!serverExecutor.isTerminated()) {
-            serverExecutor.awaitTermination(1, TimeUnit.SECONDS);
+            serverExecutor.awaitTermination(2, TimeUnit.SECONDS);
         }
     }
 
@@ -39,7 +40,7 @@ public class ServerTest {
             dos.writeUTF("hello server");
             dos.flush();
             String response = dis.readUTF();
-            assertTrue("hello client".equals(response));
+            assertTrue(ResponseMessage.HELLO_CLIENT.getMessage().equals(response));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,7 +56,7 @@ public class ServerTest {
             dos.writeUTF("");
             dos.flush();
             String response = dis.readUTF();
-            assertTrue("unexpected message".equals(response));
+            assertTrue(ResponseMessage.UNEXPECTED.getMessage().equals(response));
         } catch (IOException e) {
             e.printStackTrace();
         }
