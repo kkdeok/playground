@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
  * Created by Kideok Kim on 23/06/2018.
  */
 public class ExecutorTest {
+    private static int NUM = 1;
 
     @Test
     public void testFixedThreadPool() {
@@ -22,6 +23,35 @@ public class ExecutorTest {
         try {
             service.awaitTermination(5000, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Integer getCount() {
+        return NUM++;
+    }
+
+    @Test
+    public void testFixedThreadPoolWithFuture() {
+        ExecutorService service = Executors.newFixedThreadPool(2);
+        Callable<Integer> task = this::getCount;
+
+        Future future1 = service.submit(task);
+        Future future2 = service.submit(task);
+        Future future3 = service.submit(task);
+
+        try {
+            Integer result1 = (Integer) future1.get();
+            Integer result2 = (Integer) future2.get();
+            Integer result3 = (Integer) future3.get();
+
+            assertTrue(result1 == 1);
+            assertTrue(result2 == 2);
+            assertTrue(result3 == 3);
+
+            service.shutdown();
+            service.awaitTermination(5000, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
