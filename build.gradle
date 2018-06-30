@@ -1,14 +1,14 @@
 group 'com.doubleknd26.exercise'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
+subprojects {
+    apply plugin: 'java'
+    compileJava {options.encoding = "UTF-8"}
+    sourceCompatibility = 1.8
 
-sourceCompatibility = 1.8
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    dependencies {}
 }
