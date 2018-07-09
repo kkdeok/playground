@@ -31,10 +31,11 @@ public class HbaseClient {
         }
     }
 
-    public void put(String key, byte[] value) throws IOException {
+    public Put put(String key, byte[] value) throws IOException {
         Put put = new Put(Bytes.toBytes(key));
         put.addColumn(Bytes.toBytes(cf), Bytes.toBytes(cl), value);
         table.put(put);
+        return put;
     }
 
     public byte[] get(String key) throws IOException {

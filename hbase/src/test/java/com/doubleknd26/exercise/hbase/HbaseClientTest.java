@@ -2,7 +2,9 @@ package com.doubleknd26.exercise.hbase;
 
 import com.google.common.collect.Maps;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
+import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.yaml.snakeyaml.Yaml;
@@ -55,11 +57,15 @@ public class HbaseClientTest {
     }
 
     @Test
-    public void testPutAndGet() {
+    public void testPut() {
         try {
             String key = "fakeKey";
             byte[] value = Bytes.toBytes("fakeValue");
-            client.put(key, value);
+            Put put = client.put(key, value);
+            String cf = (String) tableConfig.get("cf");
+            String cl = (String) tableConfig.get("cl");
+            assertTrue(Bytes.equals(put.getRow(), Bytes.toBytes(key)));
+            assertTrue(put.has(Bytes.toBytes(cf), Bytes.toBytes(cl), value));
             byte[] response = client.get(key);
             assertTrue(Arrays.equals(value, response));
         } catch (IOException e) {
