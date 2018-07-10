@@ -1,6 +1,8 @@
 package com.doubleknd26.exercise.hbase;
 
 import com.google.common.collect.Maps;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.TableName;
@@ -20,19 +22,13 @@ import static org.junit.Assert.assertTrue;
  * Created by Kideok Kim on 15/06/2018.
  */
 public class HbaseClientTest {
+    private static final boolean useEmbeddedHbase = true;
     private static HBaseTestingUtility utility;
     private static Map tableConfig;
     private HbaseClient client;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        utility = new HBaseTestingUtility();
-        // For whatever reason, we have to set port number to use HbaseTestingUtility in ver 2.0.0.
-        utility.getConfiguration().set("hbase.master.port", "60000");
-        utility.getConfiguration().set("hbase.master.info.port", "60010");
-        utility.getConfiguration().set("hbase.regionserver.port", "60020");
-        utility.getConfiguration().set("hbase.regionserver.info.port", "60030");
-        utility.startMiniCluster();
         // read configuration
         FileInputStream is = new FileInputStream("config/config-local.yml");
         Yaml yaml = new Yaml();
@@ -40,34 +36,53 @@ public class HbaseClientTest {
         tableConfig = (Map) config.get("hbase_table");
         String name = (String) tableConfig.get("name");
         String cf = (String) tableConfig.get("cf");
-        utility.createTable(TableName.valueOf(name), cf);
+        if (useEmbeddedHbase) {
+            utility = new HBaseTestingUtility();
+            // For whatever reason, we have to set belows port
+            // to use HbaseTestingUtility in ver 2.0.0
+            utility.getConfiguration().set("hbase.master.port", "60000");
+            utility.getConfiguration().set("hbase.master.info.port", "60010");
+            utility.getConfiguration().set("hbase.regionserver.port", "60020");
+            utility.getConfiguration().set("hbase.regionserver.info.port", "60030");
+            utility.startMiniCluster();
+            utility.createTable(TableName.valueOf(name), cf);
+        }
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        utility.cleanupDataTestDirOnTestFS();
-        utility.shutdownMiniCluster();
+        if (useEmbeddedHbase && utility != null) {
+            utility.shutdownMiniCluster();
+        }
     }
 
     @Before
     public void setUp() throws Exception {
-        String tableName = (String) tableConfig.get("name");
-        utility.truncateTable(TableName.valueOf(tableName));
-        client = new HbaseClient(utility.getConfiguration(), tableConfig);
+        Configuration conf;
+        if (useEmbeddedHbase) {
+            String name = (String) tableConfig.get("name");
+            utility.truncateTable(TableName.valueOf(name));
+            conf = utility.getConfiguration();
+        } else {
+            conf = HBaseConfiguration.create();
+        }
+        client = new HbaseClient(conf, tableConfig);
     }
 
     @Test
     public void testPut() {
         try {
+            // given
             String key = "fakeKey";
             byte[] value = Bytes.toBytes("fakeValue");
+            // when
             Put put = client.put(key, value);
+            // then
             String cf = (String) tableConfig.get("cf");
             String cl = (String) tableConfig.get("cl");
             assertTrue(Bytes.equals(put.getRow(), Bytes.toBytes(key)));
+            assertTrue(put.getTimestamp() == Long.MAX_VALUE);
             assertTrue(put.has(Bytes.toBytes(cf), Bytes.toBytes(cl), value));
-            byte[] response = client.get(key);
-            assertTrue(Arrays.equals(value, response));
         } catch (IOException e) {
             e.printStackTrace();
         }
