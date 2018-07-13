@@ -38,11 +38,10 @@ public class HbaseClient {
         return put;
     }
 
-    public byte[] get(String key) throws IOException {
+    public Result get(String key) throws IOException {
         Get get = new Get(Bytes.toBytes(key));
         get.addColumn(Bytes.toBytes(cf), Bytes.toBytes(cl));
-        Result result = table.get(get);
-        return result.getValue(Bytes.toBytes(cf), Bytes.toBytes(cl));
+        return table.get(get);
     }
 
     public Map<String, byte[]> scan() throws IOException {
