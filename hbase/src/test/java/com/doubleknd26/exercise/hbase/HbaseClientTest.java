@@ -133,8 +133,12 @@ public class HbaseClientTest {
             byte[] value = Bytes.toBytes("fakeValue");
             client.put(key, value);
             client.delete(key);
-//            byte[] response = client.get(key);
-//            assertTrue(response == null);
+
+            Result result = client.get(key);
+            String cf = (String) tableConfig.get("cf");
+            String cl = (String) tableConfig.get("cl");
+            byte[] response = result.getValue(Bytes.toBytes(cf), Bytes.toBytes(cl));
+            assertTrue(response == null);
         } catch (IOException e) {
             e.printStackTrace();
         }
