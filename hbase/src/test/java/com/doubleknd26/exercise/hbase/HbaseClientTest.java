@@ -2,13 +2,8 @@ package com.doubleknd26.exercise.hbase;
 
 import com.google.common.collect.Maps;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.HBaseTestingUtility;
-import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.Get;
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
 import org.yaml.snakeyaml.Yaml;
@@ -39,13 +34,7 @@ public class HbaseClientTest {
         String name = (String) tableConfig.get("name");
         String cf = (String) tableConfig.get("cf");
         if (useEmbeddedHbase) {
-            utility = new HBaseTestingUtility();
-            // For whatever reason, we have to set belows port
-            // to use HbaseTestingUtility in ver 2.0.0
-            utility.getConfiguration().set("hbase.master.port", "60000");
-            utility.getConfiguration().set("hbase.master.info.port", "60010");
-            utility.getConfiguration().set("hbase.regionserver.port", "60020");
-            utility.getConfiguration().set("hbase.regionserver.info.port", "60030");
+            utility = HbaseTestingUtility.create();
             utility.startMiniCluster();
             utility.createTable(TableName.valueOf(name), cf);
         }
