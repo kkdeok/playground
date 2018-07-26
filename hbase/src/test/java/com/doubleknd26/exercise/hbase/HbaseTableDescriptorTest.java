@@ -1,20 +1,13 @@
 package com.doubleknd26.exercise.hbase;
 
 import org.apache.hadoop.hbase.DoNotRetryIOException;
-import org.apache.hadoop.hbase.HBaseTestingUtility;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
@@ -23,41 +16,7 @@ import static org.junit.Assert.assertTrue;
  *
  * Created by Kideok Kim on 22/07/2018.
  */
-public class HbaseTableDescriptorTest {
-    private static HBaseTestingUtility utility;
-    private static Map tableConfig;
-    private static String tableName;
-    private static String cf;
-    private static String cl;
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        // read configuration
-        FileInputStream is = new FileInputStream("config/config-local.yml");
-        Yaml yaml = new Yaml();
-        Map config = (Map) yaml.load(is);
-        tableConfig = (Map) config.get("hbase_table");
-        tableName = (String) tableConfig.get("name");
-        cf = (String) tableConfig.get("cf");
-        cl = (String) tableConfig.get("cl");
-        utility = HbaseTestingUtility.create();
-        utility.startMiniCluster();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        if (utility != null) {
-            utility.shutdownMiniCluster();
-        }
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        TableName tableName = TableName.valueOf(HbaseTableDescriptorTest.tableName);
-        if (utility.getAdmin().tableExists(tableName)) {
-            utility.deleteTable(tableName);
-        }
-    }
+public class HbaseTableDescriptorTest extends HbaseTestingUtility {
 
     /**
      * As of release 2.0.0, HTableDescriptor is deprecated.

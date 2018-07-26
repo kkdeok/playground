@@ -1,14 +1,10 @@
 package com.doubleknd26.exercise.hbase;
 
 import com.google.common.collect.Maps;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.*;
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
@@ -18,46 +14,13 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Kideok Kim on 15/06/2018.
  */
-public class HbaseClientTest {
-    private static final boolean useEmbeddedHbase = true;
-    private static HBaseTestingUtility utility;
-    private static Map tableConfig;
+public class HbaseClientTest extends HbaseTestingUtility {
     private HbaseClient client;
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        // read configuration
-        FileInputStream is = new FileInputStream("config/config-local.yml");
-        Yaml yaml = new Yaml();
-        Map config = (Map) yaml.load(is);
-        tableConfig = (Map) config.get("hbase_table");
-        String name = (String) tableConfig.get("name");
-        String cf = (String) tableConfig.get("cf");
-        if (useEmbeddedHbase) {
-            utility = HbaseTestingUtility.create();
-            utility.startMiniCluster();
-            utility.createTable(TableName.valueOf(name), cf);
-        }
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        if (useEmbeddedHbase && utility != null) {
-            utility.shutdownMiniCluster();
-        }
-    }
 
     @Before
     public void setUp() throws Exception {
-        Configuration conf;
-        if (useEmbeddedHbase) {
-            String name = (String) tableConfig.get("name");
-            utility.truncateTable(TableName.valueOf(name));
-            conf = utility.getConfiguration();
-        } else {
-            conf = HBaseConfiguration.create();
-        }
-        client = new HbaseClient(conf, tableConfig);
+        super.setUp();
+        client = new HbaseClient(utility.getConfiguration(), tableConfig);
     }
 
     @Test

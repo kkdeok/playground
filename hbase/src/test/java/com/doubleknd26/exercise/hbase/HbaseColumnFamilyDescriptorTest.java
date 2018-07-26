@@ -1,60 +1,17 @@
 package com.doubleknd26.exercise.hbase;
 
-import org.apache.hadoop.hbase.HBaseTestingUtility;
-import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.ColumnFamilyDescriptor;
 import org.apache.hadoop.hbase.client.ColumnFamilyDescriptorBuilder;
 import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.yaml.snakeyaml.Yaml;
-
-import java.io.FileInputStream;
-import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Kideok Kim on 26/07/2018.
  */
-public class HbaseColumnFamilyDescriptorTest {
-    private static HBaseTestingUtility utility;
-    private static Map tableConfig;
-    private static String tableName;
-    private static String cf;
-    private static String cl;
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        // read configuration
-        FileInputStream is = new FileInputStream("config/config-local.yml");
-        Yaml yaml = new Yaml();
-        Map config = (Map) yaml.load(is);
-        tableConfig = (Map) config.get("hbase_table");
-        tableName = (String) tableConfig.get("name");
-        cf = (String) tableConfig.get("cf");
-        cl = (String) tableConfig.get("cl");
-        utility = HbaseTestingUtility.create();
-        utility.startMiniCluster();
-    }
-
-    @AfterClass
-    public static void tearDownClass() throws Exception {
-        if (utility != null) {
-            utility.shutdownMiniCluster();
-        }
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        TableName tableName = TableName.valueOf(HbaseColumnFamilyDescriptorTest.tableName);
-        if (utility.getAdmin().tableExists(tableName)) {
-            utility.deleteTable(tableName);
-        }
-    }
+public class HbaseColumnFamilyDescriptorTest extends HbaseTestingUtility {
 
     @Test
     public void testColumnFamilyCreation() {
