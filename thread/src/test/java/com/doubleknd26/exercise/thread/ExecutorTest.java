@@ -1,5 +1,7 @@
 package com.doubleknd26.exercise.thread;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import org.junit.Test;
 
 import java.util.concurrent.*;
@@ -90,5 +92,11 @@ public class ExecutorTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testListeningExecutorService() {
+        ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newWorkStealingPool());
+
     }
 }

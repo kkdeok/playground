@@ -2,10 +2,20 @@ group 'com.doubleknd26.exercise.hbase'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
 
 def hbaseVersion = '2.0.0'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
 
 repositories {
     mavenCentral()
@@ -17,6 +27,7 @@ dependencies {
     compile group: 'org.apache.hbase', name: 'hbase-client', version: hbaseVersion
     compile group: 'org.apache.hbase', name: 'hbase-common', version: hbaseVersion
     compile group: 'org.apache.hbase', name: 'hbase-server', version: hbaseVersion
+    compile group: 'org.apache.hbase', name: 'hbase-mapreduce', version: hbaseVersion
 
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     testCompile group: 'org.apache.hbase', name: 'hbase-testing-util', version: hbaseVersion
