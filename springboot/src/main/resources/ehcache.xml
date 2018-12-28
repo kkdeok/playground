@@ -1,0 +1,8 @@
+<ehcache name="MY_EHCACHE">
+    <diskStore path="java.io.tmpdir"/>
+    <cache name="memberCache"
+           maxEntriesLocalHeap="1000"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="120"
+           memoryStoreEvictionPolicy="LRU"/>
+</ehcache>

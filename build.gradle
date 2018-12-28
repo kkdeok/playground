@@ -14,7 +14,7 @@ buildscript {
     }
 }
 
-def junitVersion = "4.11"
+def junitVersion = "4.12"
 
 subprojects {
     apply plugin: 'java'
@@ -23,9 +23,6 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
     }
 
     dependencies {
