@@ -32,8 +32,10 @@ import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
- * This code was originally written for Erik's Lucene intro java.net article.
+ * Source code was provided by Lucene in Action, Second Edition.
+ * https://www.manning.com/books/lucene-in-action-second-edition
  *
+ * This code was originally written for Erik's Lucene intro java.net article.
  * Make sure to run this class after creating index using LuceneIndexer.
  * Created by doubleknd26 on 2019-01-04.
  */

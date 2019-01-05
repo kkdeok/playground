@@ -31,8 +31,10 @@ import java.io.FileReader;
 import java.nio.file.Paths;
 
 /**
- * This code was originally written for Erik's Lucene intro java.net article.
+ * Source code was provided by Lucene in Action, Second Edition.
+ * https://www.manning.com/books/lucene-in-action-second-edition
  *
+ * This code was originally written for Erik's Lucene intro java.net article.
  * Created by doubleknd26 on 2019-01-04.
  */
 public class LuceneIndexer {
