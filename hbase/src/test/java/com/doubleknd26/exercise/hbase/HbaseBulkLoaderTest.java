@@ -7,6 +7,7 @@ import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.spark.SparkException;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.serializer.KryoSerializer;
@@ -62,7 +63,7 @@ public class HbaseBulkLoaderTest extends HbaseTestingUtility implements Serializ
 
     @Test
     public void testKeyValueTypePut() throws IOException {
-        put(SAMPLES);
+        load(SAMPLES, KeyValue.Type.Put);
 
         List<Tuple4<String, String, String, String>> expected = SAMPLES;
         List<Tuple4<String, String, String, String>> response = get(KEY);
@@ -71,61 +72,61 @@ public class HbaseBulkLoaderTest extends HbaseTestingUtility implements Serializ
 
     @Test
     public void testKeyValueTypeDeleteColumnFamily() throws IOException {
-        put(SAMPLES);
-        deleteColumnFamily(Collections.singletonList(SAMPLES.get(0)));
+        load(SAMPLES, KeyValue.Type.Put);
+        load(Collections.singletonList(SAMPLES.get(0)), KeyValue.Type.DeleteFamily);
 
         List<Tuple4<String, String, String, String>> expected = Collections.EMPTY_LIST;
         List<Tuple4<String, String, String, String>> response = get(KEY);
         assertTrue(isEquals(expected, response));
     }
 
-    private void put(List<Tuple4<String, String, String, String>> samples) throws IOException {
-        List<Tuple2<ImmutableBytesWritable, KeyValue>> data = createHbaseData(samples, KeyValue.Type.Put);
-        JavaPairRDD<ImmutableBytesWritable, KeyValue> pairRdd = jsc.parallelizePairs(data);
-        HbaseBulkLoader.load(pairRdd, utility.getConfiguration(), conn, table);
+    /**
+     * org.apache.spark.SparkException: Task failed while writing rows
+     * Caused by: java.lang.IllegalArgumentException: Can not create a Path from an empty string
+     * @throws IOException
+     */
+    @Test(expected = SparkException.class)
+    public void testKeyValueTypeDelete() throws IOException {
+        load(SAMPLES, KeyValue.Type.Put);
+        load(Collections.singletonList(SAMPLES.get(0)), KeyValue.Type.Delete);
     }
 
-    private void deleteColumnFamily(List<Tuple4<String, String, String, String>> samples) throws IOException {
-        List<Tuple2<ImmutableBytesWritable, KeyValue>> data = createHbaseData(samples, KeyValue.Type.DeleteFamily, true);
+    private void load(List<Tuple4<String, String, String, String>> samples, KeyValue.Type type)
+            throws IOException {
+        List<Tuple2<ImmutableBytesWritable, KeyValue>> data = createHbaseData(samples, type);
         JavaPairRDD<ImmutableBytesWritable, KeyValue> pairRdd = jsc.parallelizePairs(data);
         HbaseBulkLoader.load(pairRdd, utility.getConfiguration(), conn, table);
     }
 
     private List<Tuple2<ImmutableBytesWritable, KeyValue>> createHbaseData(
-            List<Tuple4<String, String ,String, String>> samples,
+            List<Tuple4<String, String, String, String>> samples,
             KeyValue.Type type) {
-        return createHbaseData(samples, type, false);
-    }
-
-    private List<Tuple2<ImmutableBytesWritable, KeyValue>> createHbaseData(
-            List<Tuple4<String, String ,String, String>> samples,
-            KeyValue.Type type,
-            boolean withoutColumn) {
         List<Tuple2<ImmutableBytesWritable, KeyValue>> data = Lists.newArrayList();
-        for (Tuple4<String, String, String, String> tuple: samples) {
+        for (Tuple4<String, String, String, String> tuple : samples) {
             byte[] key = tuple._1().getBytes();
             byte[] cf = tuple._2().getBytes();
             byte[] cl = tuple._3().getBytes();
             byte[] val = tuple._4().getBytes();
 
             ImmutableBytesWritable ibw = new ImmutableBytesWritable(key);
-            KeyValue kv;
-            if (withoutColumn) {
-                kv = createKeyValue(key, cf, val, type);
-            } else {
-                kv = createKeyValue(key, cf, cl, val, type);
-            }
+            KeyValue kv = createKeyValue(key, cf, cl, val, type);
             data.add(new Tuple2<>(ibw, kv));
         }
         return data;
     }
 
-    private KeyValue createKeyValue(byte[] row, byte[] cf, byte[] value, KeyValue.Type type) {
-        return createKeyValue(row, cf, null, value, type);
-    }
-
     private KeyValue createKeyValue(byte[] row, byte[] cf, byte[] cl, byte[] value, KeyValue.Type type) {
-        return new KeyValue(row, cf, cl, HConstants.LATEST_TIMESTAMP, type, value);
+        final long timestamp = HConstants.LATEST_TIMESTAMP;
+        switch (type) {
+            case Put:
+                return new KeyValue(row, cf, cl, timestamp, type, value);
+            case DeleteFamily:
+                return new KeyValue(row, cf, null, timestamp, type);
+            case Delete:
+                return new KeyValue(row, timestamp, type);
+            default:
+                throw new RuntimeException("Unknown KeyValue.Type exception: " + type);
+        }
     }
 
     private List<Tuple4<String, String, String, String>> get(String key) throws IOException {
