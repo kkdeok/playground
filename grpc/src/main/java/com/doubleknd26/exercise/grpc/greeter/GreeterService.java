@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 /**
- * Created by coupang on 23/10/2018.
+ * Created by Kideok Kim on 23/10/2018.
  */
 public class GreeterService {
     private static final Logger logger = Logger.getLogger(GreeterService.class.getName());

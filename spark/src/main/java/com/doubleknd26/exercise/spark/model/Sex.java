@@ -1,7 +1,7 @@
 package com.doubleknd26.exercise.spark.model;
 
 /**
- * Created by coupang on 2019-02-04.
+ * Created by Kideok Kim on 2019-02-04.
  */
 public enum Sex {
     WOMAN("WOMAN"),

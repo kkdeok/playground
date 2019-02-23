@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by coupang on 23/10/2018.
+ * Created by Kideok Kim on 23/10/2018.
  */
 public class GreeterClient {
     private static final Logger logger = Logger.getLogger(GreeterClient.class.getName());
