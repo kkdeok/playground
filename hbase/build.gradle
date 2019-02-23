@@ -7,13 +7,16 @@ apply plugin: 'com.github.johnrengelman.shadow'
 sourceCompatibility = 1.8
 
 def hbaseVersion = '2.0.0'
+def jacksonVersion = '2.9.2'
 
 buildscript {
     repositories {
-        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
     }
 }
 
@@ -22,20 +25,33 @@ repositories {
 }
 
 dependencies {
+    compile (project(':spark')) {
+        exclude group: 'com.fasterxml.jackson.core'
+    }
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.17'
+    compile group: 'io.javaslang', name: 'javaslang', version: '2.0.6'
 
     compile group: 'org.apache.hbase', name: 'hbase-client', version: hbaseVersion
     compile group: 'org.apache.hbase', name: 'hbase-common', version: hbaseVersion
     compile group: 'org.apache.hbase', name: 'hbase-server', version: hbaseVersion
     compile group: 'org.apache.hbase', name: 'hbase-mapreduce', version: hbaseVersion
 
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.12', version: jacksonVersion
+
+    // to avoid Incompatible Jackson version error in unit test
+    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+    testCompile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+    testCompile group: 'com.fasterxml.jackson.module', name: 'jackson-module-scala_2.12', version: jacksonVersion
+
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     testCompile group: 'org.apache.hbase', name: 'hbase-testing-util', version: hbaseVersion
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-jar {
-    finalizedBy shadowJar
+shadowJar {
+    zip64 true
     manifest {
         attributes 'Main-Class': 'com.doubleknd26.exercise.hbase.HbaseTableCreator'
     }
