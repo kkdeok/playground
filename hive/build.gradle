@@ -1,0 +1,37 @@
+plugins {
+    id 'scala'
+}
+
+group 'com.doubleknd26.exercise.hive'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala']
+        }
+    }
+    test {
+        scala {
+            srcDirs = ['src/test/scala']
+        }
+    }
+}
+
+def sparkVersion = '2.4.3'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.scala-lang:scala-library:2.11.12'
+    testImplementation 'org.scalatest:scalatest_2.11:3.0.0'
+    testImplementation 'junit:junit:4.12'
+
+    compile group: 'org.apache.spark', name: 'spark-core_2.12', version: sparkVersion
+    compile group: 'org.apache.spark', name: 'spark-sql_2.12', version: sparkVersion
+    compile group: 'org.apache.spark', name: 'spark-hive_2.12', version: sparkVersion
+}
