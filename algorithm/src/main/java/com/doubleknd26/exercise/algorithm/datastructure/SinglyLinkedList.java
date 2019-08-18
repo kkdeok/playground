@@ -11,30 +11,6 @@ public class SinglyLinkedList {
         Node next;
     }
 
-    public static void main(String[] args) throws IOException {
-        start();
-        bw.flush();
-        bw.close();
-        br.close();
-    }
-
-    private static void start() throws IOException {
-        Node head = new Node();
-        head.next = null;
-        // insert 5 values
-        for (int i=0 ; i<5 ; i++) {
-            int key = Integer.parseInt(br.readLine());
-            ins(head, key);
-            print(head);
-        }
-        // remove 3 values
-        for (int i=0 ; i<3 ; i++) {
-            int key = Integer.parseInt(br.readLine());
-            del(head, key);
-            print(head);
-        }
-    }
-
     private static void ins(Node head, int key) {
         Node p = head.next;
         Node prev = head;
@@ -74,5 +50,26 @@ public class SinglyLinkedList {
             p = p.next;
         }
         bw.write("\n");
+    }
+
+    public static void main(String[] args) throws IOException {
+        Node head = new Node();
+        head.next = null;
+        // insert 5 values
+        for (int i = 0; i < 5; i++) {
+            int key = Integer.parseInt(br.readLine());
+            ins(head, key);
+            print(head);
+        }
+        // remove 3 values
+        for (int i = 0; i < 3; i++) {
+            int key = Integer.parseInt(br.readLine());
+            del(head, key);
+            print(head);
+        }
+
+        bw.flush();
+        bw.close();
+        br.close();
     }
 }
