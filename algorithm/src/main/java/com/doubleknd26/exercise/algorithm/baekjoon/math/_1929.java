@@ -25,6 +25,7 @@ public class _1929 {
 
         boolean isNonPrime[] = new boolean[n + 1];
         List<Integer> primes = new ArrayList<>();
+        // 에라토스테네스의 체, prime number 찾기
         for (int i=2 ; i<=n ; i++) {
             if (!isNonPrime[i]) {
                 primes.add(i);
