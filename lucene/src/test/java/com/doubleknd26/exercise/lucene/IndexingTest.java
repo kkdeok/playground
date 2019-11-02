@@ -122,6 +122,8 @@ public class IndexingTest {
         IndexWriter writer = getWriter();
         assertEquals(2, writer.numDocs());
         writer.deleteDocuments(new Term("id", "1"));
+        // IndexWriter.optimize() is deprecated and removed.
+        // https://lucene.apache.org/core/3_6_0/api/all/org/apache/lucene/index/IndexWriter.html#optimize()
         writer.forceMergeDeletes();
         assertFalse(writer.hasDeletions());
         assertEquals(1, writer.maxDoc());
