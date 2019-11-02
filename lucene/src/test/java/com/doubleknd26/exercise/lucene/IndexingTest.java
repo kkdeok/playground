@@ -55,6 +55,7 @@ public class IndexingTest {
         IndexWriter writer = getWriter();
         for (int i = 0; i < ids.length; i++) {
             Document doc = new Document();
+            // StringField is a way to index and store an un-analyzed field.
             doc.add(new StringField("id", ids[i], Field.Store.YES));
             doc.add(new StoredField("country", unindexed[i]));
             doc.add(new TextField("contents", unstored[i], Field.Store.NO));
