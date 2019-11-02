@@ -11,3 +11,4 @@ gradlew.bat
 **/.settings
 **/bin
 metastore_db/
+lucene/index/
