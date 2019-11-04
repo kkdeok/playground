@@ -164,8 +164,9 @@ public class IndexingTest {
     @Test
     public void testMaxFieldLength() throws IOException {
         assertEquals(1, getHitCount("contents", "bridges"));
-        // TODO: need to dive deep into LimitTokenCountAnalyzer.
         IndexWriterConfig config = new IndexWriterConfig(
+                // LimitTokenCountAnalyzer limits the number of tokens while indexing.
+                // Text is split by spaces, and then calculated in order from the beginning.
                 new LimitTokenCountAnalyzer(new WhitespaceAnalyzer(), 1));
         IndexWriter writer = new IndexWriter(directory, config);
         Document doc = new Document();
