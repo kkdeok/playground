@@ -11,10 +11,12 @@ repositories {
     mavenCentral()
 }
 
+ext.luceneVersion = '7.3.0'
+
 dependencies {
-    compile group: 'org.apache.lucene', name: 'lucene-core', version: '7.3.0'
-    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: '7.3.0'
-    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '7.3.0'
+    compile group: 'org.apache.lucene', name: 'lucene-core', version: "${luceneVersion}"
+    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: "${luceneVersion}"
+    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: "${luceneVersion}"
     
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
