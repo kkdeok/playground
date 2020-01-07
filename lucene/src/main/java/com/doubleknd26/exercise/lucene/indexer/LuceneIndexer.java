@@ -15,6 +15,7 @@ package com.doubleknd26.exercise.lucene.indexer;
  * See the License for the specific lan
  */
 
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.index.IndexOptions;
 import org.apache.lucene.index.IndexWriter;
@@ -42,7 +43,7 @@ public class LuceneIndexer {
 
     public LuceneIndexer(String indexDir) throws IOException {
         final Directory dir = FSDirectory.open(Paths.get(indexDir));
-        this.writer = new IndexWriter(dir, new IndexWriterConfig());
+        this.writer = new IndexWriter(dir, new IndexWriterConfig(new SimpleAnalyzer()));
 
     }
 
