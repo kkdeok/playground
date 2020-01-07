@@ -61,6 +61,7 @@ public class IndexWriterLockTest {
 
     /**
      * A Expected exception: only one IndexWriter allowed to access index at once
+     *
      * @throws IOException
      */
     @Test(expected = LockObtainFailedException.class)
