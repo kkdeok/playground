@@ -1,16 +1,14 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import com.doubleknd26.exercise.macro.util.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public abstract class Searcher {
-	WebDriver driver;
+	WebDriverManager driver;
 	TargetInfo targetInfo;
 	ExecutorService executor;
 
@@ -22,19 +20,18 @@ public abstract class Searcher {
 
 	private void initDriver(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
+		options.addArguments("disable-gpu");
 		if (isHeadless) {
 			options.setHeadless(true);
-			options.addArguments("disable-gpu");
 		}
-		this.driver = new ChromeDriver(options);
-		this.driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+		this.driver = new WebDriverManager(options);
 	}
 
 	public void start() throws Exception {
 		visitMainPage();
+		Thread.sleep(2000);
 		login();
+		Thread.sleep(2000);
 		search();
 	}
 

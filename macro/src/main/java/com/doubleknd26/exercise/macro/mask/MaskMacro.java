@@ -2,11 +2,13 @@ package com.doubleknd26.exercise.macro.mask;
 
 import com.doubleknd26.exercise.macro.mask.search.CoupangSearcher;
 import com.doubleknd26.exercise.macro.mask.search.Searcher;
+import com.doubleknd26.exercise.macro.util.NotificationManager;
 
 public class MaskMacro {
 
 	public void start() throws Exception {
 		Searcher searcher = new CoupangSearcher(TargetInfo.COUPANG, false);
+		NotificationManager.noti("마스크 매크로를 시작합니다.");
 		searcher.start();
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {

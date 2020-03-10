@@ -1,13 +1,10 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
+import com.doubleknd26.exercise.macro.util.NotificationManager;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Action;
-import org.openqa.selenium.interactions.Actions;
 
 import java.util.List;
-import java.util.concurrent.*;
-import java.util.concurrent.TimeoutException;
 
 public class CoupangSearcher extends Searcher {
 	private static final String WISH_LIST_URL =
@@ -19,82 +16,39 @@ public class CoupangSearcher extends Searcher {
 
 	@Override
 	void login() {
-		WebElement elementLogIn = driver.findElement(By.id("login"));
-		elementLogIn.click();
-		WebElement elementId = driver.findElement(By.className("_loginIdInput"));
-		elementId.sendKeys(targetInfo.getId());
-		WebElement elementPw = driver.findElement(By.className("_loginPasswordInput"));
-		elementPw.sendKeys(targetInfo.getPw());
-		WebElement submit = driver.findElement(By.className("login__button--submit"));
-		submit.click();
+		driver.clickElement(By.id("login"));
+		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
+		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
+		driver.clickElement(By.className("login__button--submit"));
 	}
 
 	@Override
 	void search() throws Exception {
-		long tryCount = 0;
+		driver.get(WISH_LIST_URL);
+		long cnt = 0;
 		while (true) {
-			System.out.println(++tryCount + ": ----------------------");
-			goWishListPage();
+			System.out.println("TRY: " + ++cnt);
 			int addedCount = 0;
 			// TODO: find next page
-//			do {
-			addedCount += addWishListToCart();
-//			} while (hasNextPage());
+			addedCount += addWishItemToCart();
 			if (addedCount > 0) {
 				pay();
+				driver.get(WISH_LIST_URL);
+			} else {
+				driver.refresh();
 			}
 		}
 	}
 
-	// TODO: fix here. first try always failed so that I added retry.
-	private void goWishListPage() throws Exception {
-		int retry = 3;
-		while (retry-- > 0) {
-			try {
-				Runnable goToWishListPage = () -> driver.get(WISH_LIST_URL);
-				executor.submit(goToWishListPage).get(2, TimeUnit.SECONDS);
-				break;
-			} catch (TimeoutException e) {
-			}
-		}
-	}
-
-	private void goCartPage() throws Exception {
-		int retry = 3;
-		while (retry-- > 0) {
-			try {
-				Runnable goToWishListPage = () -> driver.get("https://cart.coupang.com/cartView.pang");
-				executor.submit(goToWishListPage).get(2, TimeUnit.SECONDS);
-				break;
-			} catch (TimeoutException e) {
-			}
-		}
-	}
-
-	private int addWishListToCart() {
+	private int addWishItemToCart() {
 		int addedCount = 0;
 		List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 		for (WebElement item : wishList) {
-			try {
-				int retry = 2;
-				while (retry-- > 0) {
-					try {
-						String itemName = item.findElement(By.className("item-name")).getText();
-						System.out.println("try to add " + itemName);
-						Callable<WebElement> m = () -> item.findElement(By.className("add-to-cart__btn"));
-						Future<WebElement> future = executor.submit(m);
-						WebElement addToCartBtn = future.get(100, TimeUnit.MILLISECONDS);
-						addToCartBtn.click();
-						System.out.println(itemName + " is added.");
-						addedCount++;
-						// TODO: slack noti
-						break;
-					} catch (StaleElementReferenceException e) {
-					}
-				}
-			} catch (NoSuchElementException | InterruptedException | ExecutionException
-					| TimeoutException e) {
-				// do nothing
+			boolean success = driver.clickElement(item, By.className("add-to-cart__btn"));
+			if (success) {
+				String name = driver.getElementText(item, By.className("item-name"));
+				NotificationManager.noti(name + " 상품이 장바구니에 추가됐습니다.");
+				addedCount++;
 			}
 		}
 		return addedCount;
@@ -111,7 +65,7 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	private void pay() throws Exception {
-		goCartPage();
+		driver.get("https://cart.coupang.com/cartView.pang");
 		WebElement elementAllDealSelect = driver.findElement(By.className("all-deal-select"));
 		if (!elementAllDealSelect.isSelected()) {
 			elementAllDealSelect.click();
