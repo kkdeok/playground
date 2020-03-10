@@ -36,11 +36,9 @@ public abstract class Searcher {
 		visitMainPage();
 		login();
 		search();
-		stop();
 	}
 
-	private void stop() throws InterruptedException {
-		Thread.sleep(2000);
+	public void stop() {
 		driver.quit();
 	}
 

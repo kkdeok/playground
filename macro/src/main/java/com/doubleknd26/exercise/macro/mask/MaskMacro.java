@@ -11,6 +11,7 @@ public class MaskMacro {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			// Use stderr here since the logger may have been reset by its JVM shutdown hook.
+			searcher.stop();
 			System.err.println("MaskMacro shutdown");
 		}));
 	}
