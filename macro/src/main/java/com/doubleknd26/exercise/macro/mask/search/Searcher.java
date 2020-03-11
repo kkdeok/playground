@@ -1,6 +1,7 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
+import com.doubleknd26.exercise.macro.util.SlackMessageService;
 import com.doubleknd26.exercise.macro.util.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -11,10 +12,12 @@ public abstract class Searcher {
 	WebDriverManager driver;
 	TargetInfo targetInfo;
 	ExecutorService executor;
+	SlackMessageService messageService;
 
-	Searcher(TargetInfo targetInfo, boolean isHeadless) {
+	Searcher(TargetInfo targetInfo, boolean isHeadless, SlackMessageService messageService) {
 		initDriver(isHeadless);
 		this.targetInfo = targetInfo;
+		this.messageService = messageService;
 		this.executor = Executors.newFixedThreadPool(1);
 	}
 

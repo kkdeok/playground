@@ -1,7 +1,7 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
-import com.doubleknd26.exercise.macro.util.NotificationManager;
+import com.doubleknd26.exercise.macro.util.SlackMessageService;
 import org.openqa.selenium.*;
 
 import java.util.List;
@@ -10,8 +10,8 @@ public class CoupangSearcher extends Searcher {
 	private static final String WISH_LIST_URL =
 			"https://wish-web.coupang.com/wishInitView.pang?useTopBanner=true&isHttps=true&pcid=13242881933738580458302";
 
-	public CoupangSearcher(TargetInfo targetInfo, boolean isHeadless) {
-		super(targetInfo, isHeadless);
+	public CoupangSearcher(TargetInfo targetInfo, boolean isHeadless, SlackMessageService messageService) {
+		super(targetInfo, isHeadless, messageService);
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class CoupangSearcher extends Searcher {
 			// TODO: find next page
 			addedCount += addWishItemToCart();
 			if (addedCount > 0) {
-				pay();
+//				pay();
 				driver.get(WISH_LIST_URL);
 			} else {
 				driver.refresh();
@@ -47,7 +47,7 @@ public class CoupangSearcher extends Searcher {
 			boolean success = driver.clickElement(item, By.className("add-to-cart__btn"));
 			if (success) {
 				String name = driver.getElementText(item, By.className("item-name"));
-				NotificationManager.noti(name + " 상품이 장바구니에 추가됐습니다.");
+				messageService.noti(name + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
 			}
 		}
