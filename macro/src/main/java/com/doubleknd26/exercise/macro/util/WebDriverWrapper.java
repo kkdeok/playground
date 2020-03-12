@@ -16,7 +16,7 @@ import java.util.function.Function;
  * consider only chrome for now.
  */
 public class WebDriverWrapper {
-	private static final int RETRY_CNT = 2;
+	private static final int RETRY_CNT = 3;
 	private WebDriver driver;
 
 	public WebDriverWrapper(ChromeOptions options) {
