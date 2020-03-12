@@ -49,7 +49,6 @@ public abstract class Searcher {
 
 	void visitMainPage() {
 		driver.get(targetInfo.getMainPageUrl());
-		logger.info("visit main page: " + driver.driver.getCurrentUrl());
 	}
 
 	abstract void login();
