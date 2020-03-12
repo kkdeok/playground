@@ -18,8 +18,13 @@ public class CoupangSearcher extends Searcher {
 
 	@Override
 	void login() {
-		driver.clickElement(By.id("login"));
-		driver.wait(3);
+		WebElement login = driver.findElement(By.id("login"), 5);
+		if (login == null) {
+			logger.info("didn't find login element");
+		} else {
+			driver.clickElement(login);
+		}
+
 		logger.info("login page: " + driver.driver.getCurrentUrl());
 		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
 		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
