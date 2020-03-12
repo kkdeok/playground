@@ -32,7 +32,7 @@ public class CoupangSearcher extends Searcher {
 			int addedCount = 0;
 			addedCount += addToCart();
 			if (addedCount > 0) {
-//				pay();
+				pay();
 				driver.get(WISH_LIST_URL);
 			} else {
 				visitNextWishListPage();
@@ -80,11 +80,20 @@ public class CoupangSearcher extends Searcher {
 		if (!elementAllDealSelect.isSelected()) {
 			elementAllDealSelect.click();
 		}
-		driver.findElement(By.id("btnPay")).click();
-		driver.findElement(By.className("insert-cash-toggle")).click();
-		driver.findElement(By.id("cashAllUsing")).click();
-		driver.findElement(By.className("active")).click();
-		driver.findElement(By.id("paymentBtn")).click();
+		driver.wait(1);
+		WebElement payBtn = driver.findElement(By.id("btnPay"));
+		driver.clickElement(payBtn);
+		driver.wait(1);
+		WebElement toggle = driver.findElement(By.className("insert-cash-toggle"));
+		driver.clickElement(toggle);
+		driver.wait(1);
+		WebElement cashAllUsing = driver.findElement(By.id("cashAllUsing"));
+		driver.clickElement(cashAllUsing);
+		driver.wait(1);
+		WebElement active = driver.findElement(By.className("active"));
+		driver.clickElement(active);
+		WebElement paymentBtn = driver.findElement(By.id("paymentBtn"));
+		driver.clickElement(paymentBtn);
 		driver.wait(5);
 		messageService.noti("구매 완료!", "channel");
 	}
