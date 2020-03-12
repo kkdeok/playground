@@ -26,8 +26,8 @@ public class WebDriverWrapper {
 
 	private void initDriver() {
 		this.driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().deleteAllCookies();
 	}
 
