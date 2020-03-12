@@ -29,6 +29,8 @@ public abstract class Searcher {
 		options.addArguments("disable-gpu");
 		if (isHeadless) {
 			options.setHeadless(true);
+			options.addArguments("--disable-extensions");
+			options.addArguments("--no-sandbox");
 		}
 		this.driver = new WebDriverWrapper(options);
 	}
