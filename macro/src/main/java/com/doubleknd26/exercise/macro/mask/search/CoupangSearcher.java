@@ -20,6 +20,7 @@ public class CoupangSearcher extends Searcher {
 	void login() {
 		driver.clickElement(By.id("login"));
 		driver.wait(3);
+		logger.info("login page: " + driver.driver.getCurrentUrl());
 		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
 		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
 		driver.clickElement(By.className("login__button--submit"));
