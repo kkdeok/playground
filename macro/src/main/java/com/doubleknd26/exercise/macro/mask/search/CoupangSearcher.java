@@ -19,7 +19,6 @@ public class CoupangSearcher extends Searcher {
 	@Override
 	void login() {
 		driver.clickElement(By.id("login"));
-		driver.wait(5);
 		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
 		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
 		driver.clickElement(By.className("login__button--submit"));

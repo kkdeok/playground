@@ -48,6 +48,11 @@ public class WebDriverWrapper {
 		return retry(task, by);
 	}
 
+	public WebElement findElement(By by, int retryCnt) {
+		Function<By, WebElement> task = driver::findElement;
+		return retry(task, by, retryCnt);
+	}
+
 	public WebElement findElement(WebElement element, By by) {
 		return findElement(element, by, RETRY_CNT);
 	}
@@ -63,7 +68,7 @@ public class WebDriverWrapper {
 	}
 
 	public void sendKeyToElement(By by, String key) {
-		WebElement element = findElement(by);
+		WebElement element = findElement(by, 10);
 		Consumer<String> task = element::sendKeys;
 		retry(task, key);
 	}
