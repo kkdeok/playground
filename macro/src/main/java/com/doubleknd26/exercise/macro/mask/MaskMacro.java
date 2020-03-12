@@ -24,13 +24,19 @@ public class MaskMacro {
 				.setInitMessage("마스크 매크로를 시작합니다.")
 				.build();
 		Searcher searcher = new CoupangSearcher(TargetInfo.COUPANG, false, messageService);
-		searcher.start();
-
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-			// Use stderr here since the logger may have been reset by its JVM shutdown hook.
+		try {
+			searcher.start();
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				// Use stderr here since the logger may have been reset by its JVM shutdown hook.
+				searcher.stop();
+				messageService.noti("마스크 매크로가 종료되었습니다.");
+				System.err.println("MaskMacro shutdown");
+			}));
+		} catch (Exception e) {
 			searcher.stop();
-			System.err.println("MaskMacro shutdown");
-		}));
+			e.printStackTrace();
+			messageService.noti("마스크 매크로에 문제가 발생했습니다.");
+		}
 	}
 
 	private Map readConfig(String configPath) throws FileNotFoundException {

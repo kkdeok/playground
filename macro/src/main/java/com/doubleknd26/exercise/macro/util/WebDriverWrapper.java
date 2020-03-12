@@ -16,7 +16,7 @@ import java.util.function.Function;
  * consider only chrome for now.
  */
 public class WebDriverWrapper {
-	private static final int RETRY = 2;
+	private static final int RETRY_CNT = 2;
 	private WebDriver driver;
 
 	public WebDriverWrapper(ChromeOptions options) {
@@ -49,8 +49,12 @@ public class WebDriverWrapper {
 	}
 
 	public WebElement findElement(WebElement element, By by) {
+		return findElement(element, by, RETRY_CNT);
+	}
+
+	public WebElement findElement(WebElement element, By by, int retryCnt) {
 		Function<By, WebElement> task = element::findElement;
-		return retry(task, by);
+		return retry(task, by, retryCnt);
 	}
 
 	public List<WebElement> findElements(By by) {
@@ -75,8 +79,18 @@ public class WebDriverWrapper {
 		retry(task, element);
 	}
 
+	// It is used to prevent StaleElementReferenceException.
+	// TODO: Remove after making service stable without it.
+	public void wait(int seconds) {
+		try {
+			Thread.sleep(seconds * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private <T> void retry(Consumer<T> task, T param) {
-		for (int i=0 ; i<RETRY ; i++) {
+		for (int i = 0; i< RETRY_CNT; i++) {
 			try {
 				task.accept(param);
 				break;
@@ -86,8 +100,12 @@ public class WebDriverWrapper {
 	}
 
 	private <T, R> R retry(Function<T, R> task, T param) {
+		return retry(task, param, RETRY_CNT);
+	}
+
+	private <T, R> R retry(Function<T, R> task, T param, int retryCnt) {
 		R response = null;
-		for (int i=0 ; i<RETRY ; i++) {
+		for (int i = 0; i < retryCnt; i++) {
 			try {
 				response = task.apply(param);
 				break;
