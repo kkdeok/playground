@@ -16,6 +16,8 @@ public class MaskMacro {
 	@Parameter(names={"--config-path"}, required = false)
 	private String configPath = "macro/config/prod.yml";
 
+	private Searcher searcher;
+
 	private void start() throws Exception {
 		Map conf = readConfig(configPath);
 		SlackMessageService messageService = new SlackMessageService.Builder()
@@ -23,7 +25,7 @@ public class MaskMacro {
 				.setChannel("mask_noti")
 				.setInitMessage("마스크 매크로를 시작합니다.")
 				.build();
-		Searcher searcher = new CoupangSearcher(TargetInfo.COUPANG, false, messageService);
+		searcher = new CoupangSearcher(TargetInfo.COUPANG, false, messageService);
 		try {
 			searcher.start();
 			messageService.noti("마스크 매크로가 종료되었습니다.");
@@ -35,10 +37,15 @@ public class MaskMacro {
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			// Use stderr here since the logger may have been reset by its JVM shutdown hook.
-			searcher.stop();
-			messageService.noti("마스크 매크로가 종료되었습니다.");
+			MaskMacro.this.stop();
 			System.err.println("MaskMacro shutdown");
 		}));
+	}
+
+	private void stop() {
+		if (searcher != null) {
+			searcher.stop();
+		}
 	}
 
 	private Map readConfig(String configPath) throws FileNotFoundException {
