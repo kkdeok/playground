@@ -76,6 +76,6 @@ public class CoupangSearcher extends Searcher {
 		driver.findElement(By.className("active")).click();
 		driver.findElement(By.id("paymentBtn")).click();
 		Thread.sleep(5000);
-		System.out.println("구매 완료!");
+		messageService.noti("구매 완료!", "channel");
 	}
 }

@@ -10,12 +10,10 @@ import java.io.IOException;
 
 
 public class SlackMessageService {
-	private HttpClient client;
 	private String webHookUrl;
 	private String channel;
 
 	public SlackMessageService(String webHookUrl, String channel, String initMessage) {
-		this.client = new HttpClient();
 		this.webHookUrl = webHookUrl;
 		this.channel = channel;
 		noti(initMessage);
@@ -26,6 +24,7 @@ public class SlackMessageService {
 	}
 
 	public void noti(String message, String to) {
+		HttpClient client = new HttpClient();
 		JsonObject json = new JsonObject();
 		json.addProperty("channel", channel);
 		json.addProperty("text", Strings.isNullOrEmpty(to) ? message : "<!" + to +"> " + message);
@@ -36,9 +35,8 @@ public class SlackMessageService {
 			post.addParameter("payload", json.toString());
 			post.setRequestHeader("Content-Type","application/x-www-form-urlencoded; charset=UTF-8");
 			int responseCode = client.executeMethod(post);
-			String response = post.getResponseBodyAsString();
 			if (responseCode != HttpStatus.SC_OK) {
-				System.out.println("Response: " + response);
+				System.out.println("Response Code: " + responseCode);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
