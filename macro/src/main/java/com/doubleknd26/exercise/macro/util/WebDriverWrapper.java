@@ -79,6 +79,7 @@ public class WebDriverWrapper {
 		retry(task, element);
 	}
 
+	// https://stackoverflow.com/questions/12967541/how-to-avoid-staleelementreferenceexception-in-selenium
 	// It is used to prevent StaleElementReferenceException.
 	// TODO: Remove after making service stable without it.
 	public void wait(int seconds) {
