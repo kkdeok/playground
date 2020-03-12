@@ -16,7 +16,7 @@ public class SlackMessageService {
 	public SlackMessageService(String webHookUrl, String channel, String initMessage) {
 		this.webHookUrl = webHookUrl;
 		this.channel = channel;
-		noti(initMessage);
+//		noti(initMessage);
 	}
 
 	public void noti(String message) {

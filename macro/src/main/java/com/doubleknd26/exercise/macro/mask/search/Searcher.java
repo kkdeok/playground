@@ -2,14 +2,14 @@ package com.doubleknd26.exercise.macro.mask.search;
 
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
 import com.doubleknd26.exercise.macro.util.SlackMessageService;
-import com.doubleknd26.exercise.macro.util.WebDriverManager;
+import com.doubleknd26.exercise.macro.util.WebDriverWrapper;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public abstract class Searcher {
-	WebDriverManager driver;
+	WebDriverWrapper driver;
 	TargetInfo targetInfo;
 	ExecutorService executor;
 	SlackMessageService messageService;
@@ -27,14 +27,14 @@ public abstract class Searcher {
 		if (isHeadless) {
 			options.setHeadless(true);
 		}
-		this.driver = new WebDriverManager(options);
+		this.driver = new WebDriverWrapper(options);
 	}
 
 	public void start() throws Exception {
 		visitMainPage();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		login();
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		search();
 	}
 

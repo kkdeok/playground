@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CoupangSearcher extends Searcher {
 	private static final String WISH_LIST_URL =
-			"https://wish-web.coupang.com/wishInitView.pang?useTopBanner=true&isHttps=true&pcid=13242881933738580458302";
+			"https://wish-web.coupang.com/wishInitView.pang?useTopBanner=true&isHttps=true";
 
 	public CoupangSearcher(TargetInfo targetInfo, boolean isHeadless, SlackMessageService messageService) {
 		super(targetInfo, isHeadless, messageService);
@@ -30,7 +30,7 @@ public class CoupangSearcher extends Searcher {
 			System.out.println("TRY: " + ++cnt);
 			int addedCount = 0;
 			// TODO: find next page
-			addedCount += addWishItemToCart();
+			addedCount += addToCart();
 			if (addedCount > 0) {
 //				pay();
 				driver.get(WISH_LIST_URL);
@@ -40,14 +40,16 @@ public class CoupangSearcher extends Searcher {
 		}
 	}
 
-	private int addWishItemToCart() {
+	private int addToCart() {
 		int addedCount = 0;
 		List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 		for (WebElement item : wishList) {
-			boolean success = driver.clickElement(item, By.className("add-to-cart__btn"));
-			if (success) {
-				String name = driver.getElementText(item, By.className("item-name"));
-				messageService.noti(name + " 상품이 장바구니에 추가됐습니다.", "channel");
+			System.out.println("HI");
+			WebElement addToCartBtn = driver.findElement(item, By.className("add-to-cart__btn"));
+			if (addToCartBtn != null) {
+				driver.clickElement(addToCartBtn);
+				String itemName = driver.findElement(item, By.className("item-name")).getText();
+				messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
 			}
 		}
