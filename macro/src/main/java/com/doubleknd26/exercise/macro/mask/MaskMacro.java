@@ -16,6 +16,9 @@ public class MaskMacro {
 	@Parameter(names={"--config-path"}, required = false)
 	private String configPath = "macro/config/prod.yml";
 
+	@Parameter(names={"--isHeadless"}, required = false)
+	private boolean isHeadless = false;
+
 	private Searcher searcher;
 
 	private void start() throws Exception {
@@ -25,7 +28,7 @@ public class MaskMacro {
 				.setChannel("mask_noti")
 				.setInitMessage("마스크 매크로를 시작합니다.")
 				.build();
-		searcher = new CoupangSearcher(TargetInfo.COUPANG, false, messageService);
+		searcher = new CoupangSearcher(TargetInfo.COUPANG, isHeadless, messageService);
 		try {
 			searcher.start();
 			messageService.noti("마스크 매크로가 종료되었습니다.");
