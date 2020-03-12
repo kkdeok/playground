@@ -32,9 +32,9 @@ public abstract class Searcher {
 
 	public void start() throws Exception {
 		visitMainPage();
-		Thread.sleep(1000);
+		driver.wait(1);
 		login();
-		Thread.sleep(1000);
+		driver.wait(1);
 		search();
 	}
 
