@@ -5,11 +5,14 @@ import com.google.gson.JsonObject;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 
 public class SlackMessageService {
+	private static final Logger logger = LogManager.getLogger();
 	private String webHookUrl;
 	private String channel;
 
@@ -38,6 +41,7 @@ public class SlackMessageService {
 			if (responseCode != HttpStatus.SC_OK) {
 				System.out.println("Response Code: " + responseCode);
 			}
+			logger.info(message);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {

@@ -6,6 +6,7 @@ group 'com.doubleknd26.exercise.macro'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
+ext.log4j2Version = "2.12.1"
 
 repositories {
     mavenCentral()
@@ -21,6 +22,10 @@ dependencies {
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.0'
     compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+
+    compile group: 'com.lmax', name: 'disruptor', version: '3.4.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4j2Version
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: log4j2Version
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

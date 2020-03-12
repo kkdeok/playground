@@ -3,12 +3,15 @@ package com.doubleknd26.exercise.macro.mask.search;
 import com.doubleknd26.exercise.macro.mask.TargetInfo;
 import com.doubleknd26.exercise.macro.util.SlackMessageService;
 import com.doubleknd26.exercise.macro.util.WebDriverWrapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public abstract class Searcher {
+	final Logger logger = LogManager.getLogger();
 	WebDriverWrapper driver;
 	TargetInfo targetInfo;
 	ExecutorService executor;
@@ -48,5 +51,5 @@ public abstract class Searcher {
 
 	abstract void login();
 
-	abstract void search() throws Exception;
+	abstract void search();
 }

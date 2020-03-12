@@ -25,7 +25,7 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	@Override
-	void search() throws Exception {
+	void search() {
 		driver.get(WISH_LIST_URL);
 		printTryCount();
 		while (true) {
@@ -41,16 +41,17 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	private void printTryCount() {
-		System.out.println("TRY: " + ++tryCnt);
+		logger.info("TRY: " + ++tryCnt + " --------------------------------");
 	}
 
 	private int addToCart() {
 		int addedCount = 0;
 		List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 		for (WebElement item : wishList) {
+			String itemName = driver.findElement(item, By.className("item-name")).getText();
+			logger.info(itemName);
 			WebElement addToCartBtn = driver.findElement(item, By.className("add-to-cart__btn"), 1);
 			if (addToCartBtn != null) {
-				String itemName = driver.findElement(item, By.className("item-name")).getText();
 				driver.clickElement(addToCartBtn);
 				messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
