@@ -72,6 +72,7 @@ public class WebDriverWrapper {
 		WebElement element = findElement(by);
 		Consumer<WebElement> task = WebElement::click;
 		retry(task, element);
+		wait(1);
 	}
 
 	public void clickElement(WebElement element) {
