@@ -16,7 +16,7 @@ import java.util.function.Function;
  * consider only chrome for now.
  */
 public class WebDriverWrapper {
-	private static final int RETRY_CNT = 3;
+	private static final int RETRY_CNT = 2;
 	private WebDriver driver;
 
 	public WebDriverWrapper(ChromeOptions options) {
@@ -72,7 +72,6 @@ public class WebDriverWrapper {
 		WebElement element = findElement(by);
 		Consumer<WebElement> task = WebElement::click;
 		retry(task, element);
-		wait(1);
 	}
 
 	public void clickElement(WebElement element) {
