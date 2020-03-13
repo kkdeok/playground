@@ -54,7 +54,7 @@ public class CoupangSearcher extends Searcher {
 			String itemName = element.getText();
 			logger.info(itemName);
 			try {
-				driver.findClickableElement(By.className("add-to-cart__btn")).click();
+				driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
 				messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
 			} catch (RuntimeException e) {}

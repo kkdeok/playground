@@ -72,6 +72,14 @@ public class WebDriverWrapper {
 		return element1;
 	}
 
+	public WebElement findElement(WebElement element, By by, int retryCnt) {
+		WebElement element1 = retry(ExpectedConditions.presenceOfNestedElementLocatedBy(element, by), retryCnt);
+		if (element1 == null) {
+			throw new RuntimeException("failed to find element:" + by);
+		}
+		return element1;
+	}
+
 	public List<WebElement> findElements(By by) {
 		List<WebElement> elements = retry(ExpectedConditions.presenceOfAllElementsLocatedBy(by));
 		if (elements == null) {
@@ -100,6 +108,18 @@ public class WebDriverWrapper {
 			throw new RuntimeException("failed to find clickable element: " + by);
 		}
 		return element;
+	}
+
+	public WebElement findClickableElement(WebElement element, By by, int retryCnt) {
+		WebElement clickElement = findElement(element, by, retryCnt);
+		if (clickElement == null) {
+			throw new RuntimeException("failed to find clickable element: " + by);
+		}
+		WebElement clickableElement = retry(ExpectedConditions.elementToBeClickable(clickElement), retryCnt);
+		if (clickableElement == null) {
+			throw new RuntimeException("failed to find clickable element: " + by);
+		}
+		return clickableElement;
 	}
 
 	/**
