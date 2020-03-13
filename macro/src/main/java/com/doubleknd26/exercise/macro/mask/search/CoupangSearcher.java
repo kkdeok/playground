@@ -18,17 +18,12 @@ public class CoupangSearcher extends Searcher {
 
 	@Override
 	void login() {
-		WebElement login = driver.findElement(By.id("login"), 5);
-		if (login == null) {
-			logger.info("didn't find login element");
-		} else {
-			driver.clickElement(login);
-		}
-
-		logger.info("login page: " + driver.driver.getCurrentUrl());
+		WebElement loginBtn = driver.findClickableElement(By.id("login"));
+		driver.clickAndWait(loginBtn);
 		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
 		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
-		driver.clickElement(By.className("login__button--submit"));
+		WebElement submitBtn = driver.findClickableElement(By.className("login__button--submit"));
+		driver.clickAndWait(submitBtn);
 	}
 
 	@Override
@@ -55,27 +50,23 @@ public class CoupangSearcher extends Searcher {
 		int addedCount = 0;
 		List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 		for (WebElement item : wishList) {
-			String itemName = driver.findElement(item, By.className("item-name")).getText();
+			WebElement element = driver.findElement(item, By.className("item-name"));
+			String itemName = element.getText();
 			logger.info(itemName);
-			WebElement addToCartBtn = driver.findElement(item, By.className("add-to-cart__btn"), 1);
-			if (addToCartBtn != null) {
-				driver.clickElement(addToCartBtn);
+			try {
+				driver.findClickableElement(By.className("add-to-cart__btn")).click();
 				messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
-			}
+			} catch (RuntimeException e) {}
 		}
 		return addedCount;
 	}
 
 	private void visitNextWishListPage() {
-		WebElement nextPage = driver.findElement(By.className("next-page"));
-		// can visit next wish list page
-		if (nextPage.getAttribute("disabled") == null) {
-			driver.clickElement(nextPage);
-			// Without it, wishItem.item in addToCart()
-			// throw StaleElementReferenceException.
-			driver.wait(3);
-		} else {
+		try {
+			WebElement nextPageBtn = driver.findClickableElement(By.className("next-page"));
+			driver.clickAndWait(nextPageBtn);
+		} catch (RuntimeException e) {
 			driver.refresh();
 			printTryCount();
 		}
@@ -83,25 +74,28 @@ public class CoupangSearcher extends Searcher {
 
 	private void pay() {
 		driver.get("https://cart.coupang.com/cartView.pang");
-		WebElement elementAllDealSelect = driver.findElement(By.className("all-deal-select"));
-		if (!elementAllDealSelect.isSelected()) {
-			elementAllDealSelect.click();
+
+		WebElement allDealSelectBtn = driver.findClickableElement(By.className("all-deal-select"));
+		if (!allDealSelectBtn.isSelected()) {
+			driver.clickAndWait(allDealSelectBtn, 1);
 		}
-		driver.wait(1);
-		WebElement payBtn = driver.findElement(By.id("btnPay"));
-		driver.clickElement(payBtn);
-		driver.wait(1);
-		WebElement toggle = driver.findElement(By.className("insert-cash-toggle"));
-		driver.clickElement(toggle);
-		driver.wait(1);
-		WebElement cashAllUsing = driver.findElement(By.id("cashAllUsing"));
-		driver.clickElement(cashAllUsing);
-		driver.wait(1);
-		WebElement active = driver.findElement(By.className("active"));
-		driver.clickElement(active);
-		WebElement paymentBtn = driver.findElement(By.id("paymentBtn"));
-		driver.clickElement(paymentBtn);
-		driver.wait(5);
+
+		// go to pay page.
+		WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
+		driver.clickAndWait(payBtn);
+
+		// for payment
+		WebElement toggle = driver.findClickableElement(By.className("insert-cash-toggle"));
+		driver.clickAndWait(toggle, 2);
+
+		WebElement cashAllUsingBtn = driver.findClickableElement(By.id("cashAllUsing"));
+		driver.clickAndWait(cashAllUsingBtn, 2);
+
+		WebElement activeBtn = driver.findClickableElement(By.className("active"));
+		driver.clickAndWait(activeBtn, 2);
+
+		WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
+		driver.clickAndWait(paymentBtn, 5);
 		messageService.noti("구매 완료!", "channel");
 	}
 }
