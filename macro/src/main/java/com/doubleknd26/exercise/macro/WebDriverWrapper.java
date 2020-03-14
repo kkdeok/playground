@@ -35,6 +35,8 @@ public class WebDriverWrapper {
 				"no-sandbox",
 				"disable-browser-side-navigation",
 				"start-maximized"));
+		String profileDir = "/home/ubuntu/.config/google-chrome/profile_macro/";
+		options.addArguments("user-data-dir=" + profileDir);
 		return options;
 	}
 
