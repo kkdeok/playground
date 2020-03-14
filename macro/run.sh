@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 BUILD=0
-DEBUG=
+DEBUG="-Xms256m -Xmx256m -Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=11619 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"B
 
 while [[ $# -gt 0 ]]; do
   key="$1"
