@@ -1,7 +1,7 @@
 package com.doubleknd26.exercise.macro.mask;
 
 public enum TargetInfo {
-	COUPANG("http://www.coupang.com", "doubleknd26@gmail.com", "kkdCou423@!");
+	COUPANG("https://www.coupang.com", "doubleknd26@gmail.com", "kkdCou423@!");
 
 	private String mainPageUrl;
 	private String id;
