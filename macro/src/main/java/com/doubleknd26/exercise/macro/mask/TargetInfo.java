@@ -3,7 +3,7 @@ package com.doubleknd26.exercise.macro.mask;
 public enum TargetInfo {
 	COUPANG("https://www.coupang.com", "doubleknd26@gmail.com", "kkdCou423@!");
 
-	private String mainPageUrl;
+	private String mainPageUrl; // NOTE: should use SSL(HTTPS).
 	private String id;
 	private String pw;
 
