@@ -27,7 +27,6 @@ public class WebDriverWrapper {
 	static ChromeOptions getChromeOptions(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
 		options.setHeadless(isHeadless);
-		options.setPageLoadStrategy(PageLoadStrategy.NONE);
 		options.setExperimentalOption("useAutomationExtension", false);
 		options.setExperimentalOption("excludeSwitches", Arrays.asList(
 				"enable-automation",
@@ -35,8 +34,6 @@ public class WebDriverWrapper {
 				"no-sandbox",
 				"disable-browser-side-navigation",
 				"start-maximized"));
-		String profileDir = "/home/ubuntu/.config/google-chrome/Profile1/";
-		options.addArguments("user-data-dir=" + profileDir);
 		return options;
 	}
 
