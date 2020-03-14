@@ -1,6 +1,7 @@
 package com.doubleknd26.exercise.macro;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -25,6 +26,8 @@ public class WebDriverWrapper {
 
 	static ChromeOptions getChromeOptions(boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
+		options.setHeadless(isHeadless);
+		options.setPageLoadStrategy(PageLoadStrategy.NONE);
 		options.setExperimentalOption("useAutomationExtension", false);
 		options.setExperimentalOption("excludeSwitches", Arrays.asList(
 				"enable-automation",
@@ -32,7 +35,6 @@ public class WebDriverWrapper {
 				"no-sandbox",
 				"disable-browser-side-navigation",
 				"start-maximized"));
-		options.setHeadless(isHeadless);
 		return options;
 	}
 
