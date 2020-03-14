@@ -25,9 +25,9 @@ public abstract class Searcher {
 
 	public void start() throws Exception {
 		visitMainPage();
-		driver.wait(5);
+		driver.wait(3);
 		login();
-		driver.wait(5);
+		driver.wait(3);
 		search();
 	}
 

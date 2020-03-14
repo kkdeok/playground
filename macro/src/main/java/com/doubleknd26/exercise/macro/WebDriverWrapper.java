@@ -31,8 +31,6 @@ public class WebDriverWrapper {
 		options.setExperimentalOption("excludeSwitches", Arrays.asList(
 				"enable-automation",
 				"disable-gpu",
-				"no-sandbox",
-				"disable-browser-side-navigation",
 				"start-maximized"));
 		return options;
 	}
