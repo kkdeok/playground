@@ -39,6 +39,7 @@ public class WebDriverWrapper {
 		this.driver = new ChromeDriver(getChromeOptions(isHeadless));
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().deleteAllCookies();
 		this.waitDriver = new WebDriverWait(driver, 1);
 	}
 
