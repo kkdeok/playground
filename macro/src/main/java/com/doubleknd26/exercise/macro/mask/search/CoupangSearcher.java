@@ -75,29 +75,33 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	private void pay() {
-		driver.get("https://cart.coupang.com/cartView.pang");
+		try {
+			driver.get("https://cart.coupang.com/cartView.pang");
+			WebElement allDealSelectBtn = driver.findClickableElement(By.className("all-deal-select"));
+			if (!allDealSelectBtn.isSelected()) {
+				driver.clickAndWait(allDealSelectBtn, 1);
+			}
 
-		WebElement allDealSelectBtn = driver.findClickableElement(By.className("all-deal-select"));
-		if (!allDealSelectBtn.isSelected()) {
-			driver.clickAndWait(allDealSelectBtn, 1);
+			// go to pay page.
+			WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
+			driver.clickAndWait(payBtn);
+
+			// for payment
+			WebElement toggle = driver.findClickableElement(By.className("insert-cash-toggle"));
+			driver.clickAndWait(toggle, 2);
+
+			WebElement cashAllUsingBtn = driver.findClickableElement(By.id("cashAllUsing"));
+			driver.clickAndWait(cashAllUsingBtn, 2);
+
+			WebElement activeBtn = driver.findClickableElement(By.className("active"));
+			driver.clickAndWait(activeBtn, 2);
+
+			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
+			driver.clickAndWait(paymentBtn, 5);
+			messageService.noti("구매 완료!", "channel");
+		} catch (Exception e) {
+			e.printStackTrace();
+			messageService.noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
 		}
-
-		// go to pay page.
-		WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
-		driver.clickAndWait(payBtn);
-
-		// for payment
-		WebElement toggle = driver.findClickableElement(By.className("insert-cash-toggle"));
-		driver.clickAndWait(toggle, 2);
-
-		WebElement cashAllUsingBtn = driver.findClickableElement(By.id("cashAllUsing"));
-		driver.clickAndWait(cashAllUsingBtn, 2);
-
-		WebElement activeBtn = driver.findClickableElement(By.className("active"));
-		driver.clickAndWait(activeBtn, 2);
-
-		WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
-		driver.clickAndWait(paymentBtn, 5);
-		messageService.noti("구매 완료!", "channel");
 	}
 }
