@@ -59,6 +59,7 @@ public class CoupangSearcher extends Searcher {
 				driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
 				messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 				addedCount++;
+				break; // 장바구니에 추가되면 바로 구매.
 			} catch (RuntimeException e) {}
 		}
 		return addedCount;
@@ -84,20 +85,20 @@ public class CoupangSearcher extends Searcher {
 
 			// go to pay page.
 			WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
-			driver.clickAndWait(payBtn);
+			driver.clickAndWait(payBtn, 2);
 
 			// for payment
 			WebElement toggle = driver.findClickableElement(By.className("insert-cash-toggle"));
-			driver.clickAndWait(toggle, 2);
+			driver.clickAndWait(toggle, 1);
 
 			WebElement cashAllUsingBtn = driver.findClickableElement(By.id("cashAllUsing"));
-			driver.clickAndWait(cashAllUsingBtn, 2);
+			driver.clickAndWait(cashAllUsingBtn, 1);
 
 			WebElement activeBtn = driver.findClickableElement(By.className("active"));
-			driver.clickAndWait(activeBtn, 2);
+			driver.clickAndWait(activeBtn, 1);
 
 			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
-			driver.clickAndWait(paymentBtn, 5);
+			driver.clickAndWait(paymentBtn, 3);
 			messageService.noti("구매 완료!", "channel");
 		} catch (Exception e) {
 			e.printStackTrace();
