@@ -12,4 +12,6 @@ gradlew.bat
 **/bin
 metastore_db/
 lucene/index/
-macro/config/*.yml
+.gitsecret/keys/random_seed
+!*.secret
+macro/config/prod.yml
