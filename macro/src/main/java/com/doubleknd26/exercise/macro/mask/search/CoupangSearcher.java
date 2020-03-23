@@ -18,8 +18,6 @@ public class CoupangSearcher extends Searcher {
 
 	@Override
 	void login() {
-		logger.info("login: " + driver.driver.getCurrentUrl());
-		logger.info(driver.driver.getPageSource());
 		WebElement loginBtn = driver.findClickableElement(By.id("login"));
 		driver.clickAndWait(loginBtn);
 		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
