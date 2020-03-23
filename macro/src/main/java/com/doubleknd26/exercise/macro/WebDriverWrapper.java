@@ -23,6 +23,7 @@ import java.util.function.Consumer;
  */
 public class WebDriverWrapper {
 	private static final Logger logger = LogManager.getLogger();
+	private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36";
 	private static final int RETRY_CNT = 2;
 	public ChromeDriver driver;
 	private WebDriverWait waitDriver;
@@ -35,8 +36,10 @@ public class WebDriverWrapper {
 				"enable-automation",
 				"disable-gpu",
 				"start-maximized"));
-
-		options.addArguments(String.format("user-agent=%s", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"));
+		// override user-agent to avoid some access denied issue. Some
+		// web site block the user-agent with HeadlessChrome.
+		// https://stackoverflow.com/questions/54432980
+		options.addArguments(String.format("user-agent=%s", USER_AGENT));
 		return options;
 	}
 
@@ -46,8 +49,6 @@ public class WebDriverWrapper {
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 		this.waitDriver = new WebDriverWait(driver, 1);
-
-		logger.info("userAgent: " + driver.executeScript("return navigator.userAgent"));
 	}
 
 	public void quit() {
