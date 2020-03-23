@@ -1,5 +1,7 @@
 package com.doubleknd26.exercise.macro;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
@@ -20,6 +22,7 @@ import java.util.function.Consumer;
  * consider only chrome for now.
  */
 public class WebDriverWrapper {
+	private static final Logger logger = LogManager.getLogger();
 	private static final int RETRY_CNT = 2;
 	public ChromeDriver driver;
 	private WebDriverWait waitDriver;
@@ -32,6 +35,8 @@ public class WebDriverWrapper {
 				"enable-automation",
 				"disable-gpu",
 				"start-maximized"));
+
+		options.addArguments(String.format("user-agent=%s", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36"));
 		return options;
 	}
 
@@ -41,6 +46,8 @@ public class WebDriverWrapper {
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 		this.waitDriver = new WebDriverWait(driver, 1);
+
+		logger.info("userAgent: " + driver.executeScript("return navigator.userAgent"));
 	}
 
 	public void quit() {
