@@ -16,6 +16,7 @@ RUN git clone https://github.com/doubleknd26/exercise.git /app/exercise
 
 WORKDIR /app/exercise/macro
 # https://unix.stackexchange.com/questions/60213/gpg-asks-for-password-even-with-passphrase
+RUN echo "passphrase: ${passphrase}"
 RUN echo ${passphrase} | gpg --batch --yes --passphrase-fd 0 config/prod.yml.gpg
 
 ENTRYPOINT ["./run.sh", "-b"]
