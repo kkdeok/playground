@@ -1,5 +1,6 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
+import com.doubleknd26.exercise.macro.util.MessageService;
 import org.openqa.selenium.*;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public class CoupangSearcher extends Searcher {
 				logger.info(itemName);
 				try {
 					driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
-//					messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
+					MessageService.getInstance().noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 					addedCount++;
 					break; // 장바구니에 추가되면 바로 구매.
 				} catch (RuntimeException e) {
@@ -100,10 +101,10 @@ public class CoupangSearcher extends Searcher {
 
 			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
 			driver.clickAndWait(paymentBtn, 3);
-//			messageService.noti("구매 완료!", "channel");
+			MessageService.getInstance().noti("구매 완료!", "channel");
 		} catch (Exception e) {
 			e.printStackTrace();
-//			messageService.noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
+			MessageService.getInstance().noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
 		}
 	}
 }

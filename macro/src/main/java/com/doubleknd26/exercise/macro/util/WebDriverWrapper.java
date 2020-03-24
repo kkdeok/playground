@@ -44,7 +44,7 @@ public class WebDriverWrapper {
 		// web site block the user-agent with HeadlessChrome.
 		// https://stackoverflow.com/questions/54432980
 		options.addArguments(String.format("user-agent=%s", userAgent));
-		options.addArguments("--disable-dev-shm-usage");
+//		options.addArguments("--disable-dev-shm-usage");
 		return options;
 	}
 

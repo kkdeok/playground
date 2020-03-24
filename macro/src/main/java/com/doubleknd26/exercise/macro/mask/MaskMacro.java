@@ -14,7 +14,7 @@ public class MaskMacro {
 	private String configPath = "macro/config/prod.yml";
 
 	@Parameter(names={"--isHeadless"}, required = false)
-	private boolean isHeadless = false;
+	private boolean isHeadless = true;
 
 	private static final String MASK = "MASK";
 	private Searcher searcher;
