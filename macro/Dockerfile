@@ -2,6 +2,8 @@ FROM selenium/standalone-chrome:3.141.59-zirconium
 MAINTAINER doubleknd26
 MAINTAINER doubleknd26@gmail.com
 
+ARG passphrase
+
 USER root
 RUN apt-get update
 RUN apt-get install -y git
@@ -14,6 +16,6 @@ RUN git clone https://github.com/doubleknd26/exercise.git /app/exercise
 
 WORKDIR /app/exercise/macro
 # https://unix.stackexchange.com/questions/60213/gpg-asks-for-password-even-with-passphrase
-RUN echo doubleknd26 | gpg --batch --yes --passphrase-fd 0 config/prod.yml.gpg
+RUN echo ${passphrase} | gpg --batch --yes --passphrase-fd 0 config/prod.yml.gpg
 
 ENTRYPOINT ["./run.sh", "-b"]

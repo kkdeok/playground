@@ -1,7 +1,5 @@
 package com.doubleknd26.exercise.macro.mask.search;
 
-import com.doubleknd26.exercise.macro.mask.TargetInfo;
-import com.doubleknd26.exercise.macro.util.SlackMessageService;
 import org.openqa.selenium.*;
 
 import java.util.List;
@@ -9,19 +7,18 @@ import java.util.List;
 public class CoupangSearcher extends Searcher {
 	private static final String WISH_LIST_URL =
 			"https://wish-web.coupang.com/wishInitView.pang?useTopBanner=true&isHttps=true";
-	private int tryCnt;
 
-	public CoupangSearcher(TargetInfo targetInfo, boolean isHeadless, SlackMessageService messageService) {
-		super(targetInfo, isHeadless, messageService);
-		tryCnt = 0;
+
+	public CoupangSearcher(String userAgent, boolean isHeadless, String mainUrl, String id, String pw) {
+		super(userAgent, isHeadless, mainUrl, id, pw);
 	}
 
 	@Override
 	void login() {
 		WebElement loginBtn = driver.findClickableElement(By.id("login"));
 		driver.clickAndWait(loginBtn);
-		driver.sendKeyToElement(By.className("_loginIdInput"), targetInfo.getId());
-		driver.sendKeyToElement(By.className("_loginPasswordInput"), targetInfo.getPw());
+		driver.sendKeyToElement(By.className("_loginIdInput"), id);
+		driver.sendKeyToElement(By.className("_loginPasswordInput"), pw);
 		WebElement submitBtn = driver.findClickableElement(By.className("login__button--submit"));
 		driver.clickAndWait(submitBtn);
 	}
@@ -43,7 +40,7 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	private void printTryCount() {
-		logger.info("TRY: " + ++tryCnt + " --------------------------------");
+		logger.info("TRY: " + ++count + " --------------------------------");
 	}
 
 	private int addToCart() {
@@ -56,7 +53,7 @@ public class CoupangSearcher extends Searcher {
 				logger.info(itemName);
 				try {
 					driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
-					messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
+//					messageService.noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
 					addedCount++;
 					break; // 장바구니에 추가되면 바로 구매.
 				} catch (RuntimeException e) {
@@ -103,10 +100,10 @@ public class CoupangSearcher extends Searcher {
 
 			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
 			driver.clickAndWait(paymentBtn, 3);
-			messageService.noti("구매 완료!", "channel");
+//			messageService.noti("구매 완료!", "channel");
 		} catch (Exception e) {
 			e.printStackTrace();
-			messageService.noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
+//			messageService.noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
 		}
 	}
 }

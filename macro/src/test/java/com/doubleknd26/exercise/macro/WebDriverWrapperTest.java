@@ -1,5 +1,7 @@
 package com.doubleknd26.exercise.macro;
 
+import com.doubleknd26.exercise.macro.util.MacroConfig;
+import com.doubleknd26.exercise.macro.util.WebDriverWrapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +16,9 @@ public class WebDriverWrapperTest {
 
 	@Before
 	public void setUp() throws Exception {
-		driver = new WebDriverWrapper(true);
+		String configPath = "config/prod.yml";
+		MacroConfig config = new MacroConfig(configPath);
+		driver = new WebDriverWrapper(config.getUserAgent(), true);
 	}
 
 	@After

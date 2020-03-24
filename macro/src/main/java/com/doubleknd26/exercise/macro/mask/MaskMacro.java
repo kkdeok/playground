@@ -4,12 +4,9 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.doubleknd26.exercise.macro.mask.search.CoupangSearcher;
 import com.doubleknd26.exercise.macro.mask.search.Searcher;
-import com.doubleknd26.exercise.macro.util.SlackMessageService;
-import org.yaml.snakeyaml.Yaml;
+import com.doubleknd26.exercise.macro.util.MacroConfig;
+import com.doubleknd26.exercise.macro.util.MessageService;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.Map;
 
 public class MaskMacro {
@@ -17,31 +14,42 @@ public class MaskMacro {
 	private String configPath = "macro/config/prod.yml";
 
 	@Parameter(names={"--isHeadless"}, required = false)
-	private boolean isHeadless = true;
+	private boolean isHeadless = false;
 
+	private static final String MASK = "MASK";
 	private Searcher searcher;
 
+
 	private void start() throws Exception {
-		Map conf = readConfig(configPath);
-		SlackMessageService messageService = new SlackMessageService.Builder()
-				.setWebHookUrl(String.valueOf(conf.get("slack_webhook_url")))
-				.setChannel("mask_noti")
-				.setInitMessage("마스크 매크로를 시작합니다.")
-				.build();
-		searcher = new CoupangSearcher(TargetInfo.COUPANG, isHeadless, messageService);
+		MacroConfig config = new MacroConfig(configPath);
+		String webHookUrl = config.getSlackWebHookUrl();
+		String channel = config.getServiceSlackChannel(MASK);
+
+		// init MessageService
+		MessageService.createInstance(webHookUrl, channel);
+		MessageService messageService = MessageService.getInstance();
+		messageService.noti(this.getClass().getSimpleName() + " is started.");
+
+		// init Searcher
+		Map<String, String> coupangConfig = config.getServiceTarget(MASK).get("coupang");
+		searcher = new CoupangSearcher(config.getUserAgent(), isHeadless,
+				coupangConfig.get("main_url"),
+				coupangConfig.get("id"),
+				coupangConfig.get("pw"));
+
 		try {
 			searcher.start();
-			messageService.noti("마스크 매크로가 종료되었습니다.");
+			messageService.noti(this.getClass().getSimpleName() + " is terminated.");
 		} catch (Exception e) {
 			searcher.stop();
 			e.printStackTrace();
-			messageService.noti("마스크 매크로에 문제가 발생했습니다.");
+			messageService.noti(this.getClass().getSimpleName() + " got issue!");
 		}
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			// Use stderr here since the logger may have been reset by its JVM shutdown hook.
 			MaskMacro.this.stop();
-			System.err.println("MaskMacro shutdown");
+			System.err.println(this.getClass().getSimpleName() + " shutdown");
 		}));
 	}
 
@@ -49,13 +57,6 @@ public class MaskMacro {
 		if (searcher != null) {
 			searcher.stop();
 		}
-	}
-
-	private Map readConfig(String configPath) throws FileNotFoundException {
-		Yaml yaml = new Yaml();
-		InputStream inputStream = new FileInputStream(configPath);
-		Map map = (Map) yaml.load(inputStream);
-		return map;
 	}
 
 	public static void main(String[] args) throws Exception {

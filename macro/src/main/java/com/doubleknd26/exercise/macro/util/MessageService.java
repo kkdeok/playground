@@ -11,15 +11,31 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 
-public class SlackMessageService {
+public class MessageService {
 	private static final Logger logger = LogManager.getLogger();
+	private static MessageService messageService = null;
+
 	private String webHookUrl;
 	private String channel;
 
-	public SlackMessageService(String webHookUrl, String channel, String initMessage) {
+	private MessageService() {}
+
+	private MessageService(String webHookUrl, String channel) {
 		this.webHookUrl = webHookUrl;
 		this.channel = channel;
-		noti(initMessage);
+	}
+
+	public static MessageService getInstance() {
+		if (messageService == null) {
+			throw new NullPointerException("MessageService instance is not created");
+		}
+		return messageService;
+	}
+
+	public static synchronized MessageService createInstance(
+			String url, String channel) {
+		messageService = new MessageService(url, channel);
+		return messageService;
 	}
 
 	public void noti(String message) {
@@ -46,31 +62,6 @@ public class SlackMessageService {
 			e.printStackTrace();
 		} finally {
 			post.releaseConnection();
-		}
-	}
-
-	public static class Builder {
-		private String webHookUrl = null;
-		private String channel = null;
-		private String initMessage = "Message service is started.";
-
-		public Builder setWebHookUrl(String webHookUrl) {
-			this.webHookUrl = webHookUrl;
-			return this;
-		}
-
-		public Builder setChannel(String channel) {
-			this.channel = channel;
-			return this;
-		}
-
-		public Builder setInitMessage(String initMessage) {
-			this.initMessage = initMessage;
-			return this;
-		}
-
-		public SlackMessageService build() {
-			return new SlackMessageService(webHookUrl, channel, initMessage);
 		}
 	}
 }

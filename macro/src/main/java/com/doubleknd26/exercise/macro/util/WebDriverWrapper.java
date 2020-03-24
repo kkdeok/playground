@@ -1,10 +1,8 @@
-package com.doubleknd26.exercise.macro;
+package com.doubleknd26.exercise.macro.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -18,17 +16,23 @@ import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 
-/**
- * consider only chrome for now.
- */
 public class WebDriverWrapper {
 	private static final Logger logger = LogManager.getLogger();
-	private static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36";
 	private static final int RETRY_CNT = 2;
-	public ChromeDriver driver;
-	private WebDriverWait waitDriver;
 
-	static ChromeOptions getChromeOptions(boolean isHeadless) {
+	private WebDriverWait waitDriver;
+	private ChromeDriver driver;
+
+
+	public WebDriverWrapper(String userAgent, boolean isHeadless) {
+		this.driver = new ChromeDriver(getChromeOptions(userAgent, isHeadless));
+		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().deleteAllCookies();
+		this.waitDriver = new WebDriverWait(driver, 1);
+	}
+
+	private ChromeOptions getChromeOptions(String userAgent, boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
 		options.setHeadless(isHeadless);
 		options.setExperimentalOption("useAutomationExtension", false);
@@ -39,16 +43,8 @@ public class WebDriverWrapper {
 		// override user-agent to avoid some access denied issue. Some
 		// web site block the user-agent with HeadlessChrome.
 		// https://stackoverflow.com/questions/54432980
-		options.addArguments(String.format("user-agent=%s", USER_AGENT));
+		options.addArguments(String.format("user-agent=%s", userAgent));
 		return options;
-	}
-
-	public WebDriverWrapper(boolean isHeadless) {
-		this.driver = new ChromeDriver(getChromeOptions(isHeadless));
-		this.driver.manage().deleteAllCookies();
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-		this.waitDriver = new WebDriverWait(driver, 1);
 	}
 
 	public void quit() {
@@ -58,6 +54,10 @@ public class WebDriverWrapper {
 	public void get(String url) {
 		Consumer<String> task = driver::get;
 		retry(task, url);
+	}
+
+	public String getCurrentUrl() {
+		return driver.getCurrentUrl();
 	}
 
 	public void refresh() {
