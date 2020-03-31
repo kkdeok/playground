@@ -1,8 +1,7 @@
 package com.doubleknd26.exercise.lucene.indexer;
 
-import com.doubleknd26.exercise.lucene.indexer.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.lucene.analysis.core.WhitespaceAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -19,23 +18,25 @@ import java.util.Objects;
 /**
  * Build index using sample data
  */
-public class TestIndexer {
-	private static final String SAMPLE_DATA_PATH = "sample_data.json";
-	private IndexWriterConfig config;
+public class IndexerTestHelper {
 
-	public TestIndexer() {
-		this.config = new IndexWriterConfig(new WhitespaceAnalyzer());
+	public IndexWriter getWriter(Directory dir) throws IOException {
+		IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+		return new IndexWriter(dir, config);
+	}
+
+	public List<Book> getSourceData() throws IOException {
+		final String sampleDataPath = "sample_data.json";
+		ClassLoader classLoader = getClass().getClassLoader();
+		File file = new File(Objects.requireNonNull(classLoader.getResource(sampleDataPath)).getFile());
+
+		ObjectMapper mapper = new ObjectMapper();
+		return Arrays.asList(mapper.readValue(file, Book[].class));
 	}
 
 	public void buildIndex(Directory dir) throws IOException {
-		IndexWriter writer = new IndexWriter(dir, config);
-
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(Objects.requireNonNull(classLoader.getResource(SAMPLE_DATA_PATH)).getFile());
-
-		ObjectMapper mapper = new ObjectMapper();
-		List<Book> bookList = Arrays.asList(mapper.readValue(file, Book[].class));
-
+		IndexWriter writer = getWriter(dir);
+		List<Book> bookList = getSourceData();
 		for (Book book : bookList) {
 			Document doc = new Document();
 			doc.add(new StringField("id", String.valueOf(book.getId()), Field.Store.YES));
