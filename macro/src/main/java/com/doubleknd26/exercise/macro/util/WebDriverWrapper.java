@@ -155,10 +155,6 @@ public class WebDriverWrapper {
 		return !element.findElements(by).isEmpty();
 	}
 
-	public boolean isWebElementExists(By by) {
-		return !driver.findElements(by).isEmpty();
-	}
-
 	// https://stackoverflow.com/questions/12967541/how-to-avoid-staleelementreferenceexception-in-selenium
 	// It is used to prevent StaleElementReferenceException.
 	// TODO: Remove after making service stable without it.
