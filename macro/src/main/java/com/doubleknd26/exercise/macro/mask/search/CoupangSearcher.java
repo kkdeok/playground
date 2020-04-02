@@ -47,14 +47,14 @@ public class CoupangSearcher extends Searcher {
 		try {
 			List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 			for (WebElement item : wishList) {
-				WebElement element = driver.findElement(item, By.className("item-name"), 1);
+				WebElement element = driver.findElement(item, By.className("item-name"));
 				String itemName = element.getText();
 				logger.info(itemName);
-				boolean isAddToCartBtnExists = driver.isWebElementExists(item, By.className("add-to-cart__btn"));
-				if (isAddToCartBtnExists) {
+				try {
 					driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
 					MessageService.getInstance().noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
-					return true;
+					return true; // 장바구니에 추가되면 바로 구매.
+				} catch (RuntimeException e) {
 				}
 			}
 		} catch (RuntimeException e) {
