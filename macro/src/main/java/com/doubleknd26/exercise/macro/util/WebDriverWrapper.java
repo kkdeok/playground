@@ -156,7 +156,7 @@ public class WebDriverWrapper {
 	}
 
 	public boolean isWebElementExists(By by) {
-
+		return !driver.findElements(by).isEmpty();
 	}
 
 	// https://stackoverflow.com/questions/12967541/how-to-avoid-staleelementreferenceexception-in-selenium
