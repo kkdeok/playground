@@ -67,7 +67,7 @@ public class CoupangSearcher extends Searcher {
 	private void visitNextWishListPage() {
 		try {
 			WebElement nextPageBtn = driver.findClickableElement(By.className("next-page"));
-			driver.clickAndWait(nextPageBtn, 2);
+			driver.clickAndWait(nextPageBtn);
 		} catch (RuntimeException e) {
 			driver.refresh();
 			printTryCount();

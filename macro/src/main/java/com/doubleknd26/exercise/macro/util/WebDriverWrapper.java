@@ -137,7 +137,7 @@ public class WebDriverWrapper {
 	 * @param element
 	 */
 	public void clickAndWait(WebElement element) {
-		clickAndWait(element, 3);
+		clickAndWait(element, 2);
 	}
 
 	public void clickAndWait(WebElement element, int seconds) {
