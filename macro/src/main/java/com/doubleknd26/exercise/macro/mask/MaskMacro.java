@@ -31,11 +31,7 @@ public class MaskMacro {
 		messageService.noti(this.getClass().getSimpleName() + " is started.");
 
 		// init Searcher
-		Map<String, String> coupangConfig = config.getServiceTarget(MASK).get("coupang");
-		searcher = new CoupangSearcher(config.getUserAgent(), isHeadless,
-				coupangConfig.get("main_url"),
-				coupangConfig.get("id"),
-				coupangConfig.get("pw"));
+		searcher = getCoupangSearcher(config);
 
 		try {
 			searcher.start();
@@ -51,6 +47,14 @@ public class MaskMacro {
 			MaskMacro.this.stop();
 			System.err.println(this.getClass().getSimpleName() + " shutdown");
 		}));
+	}
+
+	private CoupangSearcher getCoupangSearcher(MacroConfig config) {
+		Map<String, String> coupangConfig = config.getServiceTarget(MASK).get("coupang");
+		String mainUrl = coupangConfig.get("main_url");
+		String id = coupangConfig.get("id");
+		String pw = coupangConfig.get("pw");
+		return new CoupangSearcher(config.getUserAgent(), isHeadless, mainUrl, id, pw);
 	}
 
 	private void stop() {
