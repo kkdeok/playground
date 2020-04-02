@@ -39,8 +39,8 @@ public class MaskMacro {
 			messageService.noti(appName + " is terminated.");
 		} catch (Exception e) {
 			searcher.stop();
-			e.printStackTrace();
-			messageService.noti(appName + " got issue!");
+			messageService.noti(appName + " got issue: " + e.getMessage());
+			e.printStackTrace(System.out);
 		}
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
