@@ -29,9 +29,8 @@ public class CoupangSearcher extends Searcher {
 		driver.get(WISH_LIST_URL);
 		printTryCount();
 		while (true) {
-			int addedCount = 0;
-			addedCount += addToCart();
-			if (addedCount > 0) {
+			boolean succeed = tryAddWishItemToCart();
+			if (succeed) {
 				pay();
 				driver.get(WISH_LIST_URL);
 			} else {
@@ -44,33 +43,31 @@ public class CoupangSearcher extends Searcher {
 		logger.info("TRY: " + ++count + " --------------------------------");
 	}
 
-	private int addToCart() {
-		int addedCount = 0;
+	private boolean tryAddWishItemToCart() {
 		try {
 			List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 			for (WebElement item : wishList) {
-				WebElement element = driver.findElement(item, By.className("item-name"));
+				WebElement element = driver.findElement(item, By.className("item-name"), 1);
 				String itemName = element.getText();
 				logger.info(itemName);
-				try {
+				boolean isAddToCartBtnExists = driver.isWebElementExists(item, By.className("add-to-cart__btn"));
+				if (isAddToCartBtnExists) {
 					driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
 					MessageService.getInstance().noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
-					addedCount++;
-					break; // 장바구니에 추가되면 바로 구매.
-				} catch (RuntimeException e) {
+					return true;
 				}
 			}
 		} catch (RuntimeException e) {
 			// do nothing.
 			logger.error(e.getMessage());
 		}
-		return addedCount;
+		return false;
 	}
 
 	private void visitNextWishListPage() {
 		try {
 			WebElement nextPageBtn = driver.findClickableElement(By.className("next-page"));
-			driver.clickAndWait(nextPageBtn);
+			driver.clickAndWait(nextPageBtn, 2);
 		} catch (RuntimeException e) {
 			driver.refresh();
 			printTryCount();
@@ -87,18 +84,9 @@ public class CoupangSearcher extends Searcher {
 
 			// go to pay page.
 			WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
-			driver.clickAndWait(payBtn, 2);
+			driver.clickAndWait(payBtn, 1);
 
-			// for payment
-			WebElement toggle = driver.findClickableElement(By.className("insert-cash-toggle"));
-			driver.clickAndWait(toggle, 1);
-
-			WebElement cashAllUsingBtn = driver.findClickableElement(By.id("cashAllUsing"));
-			driver.clickAndWait(cashAllUsingBtn, 1);
-
-			WebElement activeBtn = driver.findClickableElement(By.className("active"));
-			driver.clickAndWait(activeBtn, 1);
-
+			// Because I already put cash into coupay accounts, It can buy through one click.
 			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
 			driver.clickAndWait(paymentBtn, 3);
 			MessageService.getInstance().noti("구매 완료!", "channel");
