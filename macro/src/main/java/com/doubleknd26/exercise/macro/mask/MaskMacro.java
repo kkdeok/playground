@@ -21,6 +21,7 @@ public class MaskMacro {
 
 
 	private void start() throws Exception {
+		final String appName = this.getClass().getSimpleName();
 		MacroConfig config = new MacroConfig(configPath);
 		String webHookUrl = config.getSlackWebHookUrl();
 		String channel = config.getServiceSlackChannel(MASK);
@@ -28,24 +29,24 @@ public class MaskMacro {
 		// init MessageService
 		MessageService.createInstance(webHookUrl, channel);
 		MessageService messageService = MessageService.getInstance();
-		messageService.noti(this.getClass().getSimpleName() + " is started.");
+		messageService.noti(appName + " is started.");
 
 		// init Searcher
 		searcher = getCoupangSearcher(config);
 
 		try {
 			searcher.start();
-			messageService.noti(this.getClass().getSimpleName() + " is terminated.");
+			messageService.noti(appName + " is terminated.");
 		} catch (Exception e) {
 			searcher.stop();
 			e.printStackTrace();
-			messageService.noti(this.getClass().getSimpleName() + " got issue!");
+			messageService.noti(appName + " got issue!");
 		}
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			// Use stderr here since the logger may have been reset by its JVM shutdown hook.
 			MaskMacro.this.stop();
-			System.err.println(this.getClass().getSimpleName() + " shutdown");
+			System.err.println(appName + " shutdown");
 		}));
 	}
 
