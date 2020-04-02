@@ -65,10 +65,11 @@ public class CoupangSearcher extends Searcher {
 	}
 
 	private void visitNextWishListPage() {
-		try {
+		boolean isNextPageExists = driver.isWebElementExists(By.className("next-page"));
+		if (isNextPageExists) {
 			WebElement nextPageBtn = driver.findClickableElement(By.className("next-page"));
 			driver.clickAndWait(nextPageBtn, 3);
-		} catch (RuntimeException e) {
+		} else {
 			driver.refresh();
 			printTryCount();
 		}
