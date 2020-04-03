@@ -29,13 +29,8 @@ public class CoupangSearcher extends Searcher {
 		driver.get(WISH_LIST_URL);
 		printTryCount();
 		while (true) {
-			boolean succeed = tryAddWishItemToCart();
-			if (succeed) {
-				pay();
-				driver.get(WISH_LIST_URL);
-			} else {
-				visitNextWishListPage();
-			}
+			tryAddWishItemToCart();
+			visitNextWishListPage();
 		}
 	}
 
@@ -43,7 +38,7 @@ public class CoupangSearcher extends Searcher {
 		logger.info("TRY: " + ++count + " --------------------------------");
 	}
 
-	private boolean tryAddWishItemToCart() {
+	private void tryAddWishItemToCart() {
 		try {
 			List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 			for (WebElement item : wishList) {
@@ -53,7 +48,6 @@ public class CoupangSearcher extends Searcher {
 				try {
 					driver.findClickableElement(item, By.className("add-to-cart__btn"), 1).click();
 					MessageService.getInstance().noti(itemName + " 상품이 장바구니에 추가됐습니다.", "channel");
-					return true; // 장바구니에 추가되면 바로 구매.
 				} catch (RuntimeException e) {
 				}
 			}
@@ -61,7 +55,6 @@ public class CoupangSearcher extends Searcher {
 			// do nothing.
 			logger.error(e.getMessage());
 		}
-		return false;
 	}
 
 	private void visitNextWishListPage() {
