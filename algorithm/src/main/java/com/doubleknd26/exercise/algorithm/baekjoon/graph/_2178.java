@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -12,63 +11,61 @@ import java.util.Queue;
  * https://www.acmicpc.net/problem/2178
  */
 public class _2178 {
-
-	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
-	private static short[] dx = new short[]{0, 0, -1, 1};
-	private static short[] dy = new short[]{-1, 1, 0, 0};
+	private static final BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	private static final int SIZE = 101;
-	private static short[][] adj = new short[SIZE][SIZE];
-	private static short[][] visited = new short[SIZE][SIZE];
+	private static int[][] board = new int[SIZE][SIZE];
+	private static int[][] visit = new int[SIZE][SIZE];
 
-	public static void main (String[] args) throws Exception {
+	private static int[] dx = new int[]{0, 0, -1, 1};
+	private static int[] dy = new int[]{-1, 1, 0, 0};
+
+	public static void main(String[] args) throws Exception {
 		String[] input = br.readLine().split(" ");
 		int n = Integer.parseInt(input[0]);
 		int m = Integer.parseInt(input[1]);
 
-		for (int i=0 ; i<n ; i++) {
-			char[] line = br.readLine().toCharArray();
-			for (int j=0 ; j<m ; j++) {
-				adj[i][j] = Short.parseShort(String.valueOf(line[j]));
-				Arrays.fill(visited[i], Short.MAX_VALUE);
+		for (int i=1 ; i<=n ; i++) {
+			char[] tmp = br.readLine().toCharArray();
+			for (int j=1 ; j<=m ; j++) {
+				board[i][j] = tmp[j-1] - '0';
 			}
 		}
 
-		search(n, m);
-		bw.write(visited[n-1][m-1] + "\n");
+		int ret = calMinimumMovement(n, m);
+		bw.write(ret + "\n");
 		bw.flush();
 		bw.close();
-		br.close();
+		bw.close();
 	}
 
-	private static void search(int n, int m) {
-		Queue<Short> xq = new LinkedList<>();
-		Queue<Short> yq = new LinkedList<>();
+	private static int calMinimumMovement(int n, int m) {
+		Queue<Integer> qx = new LinkedList<>();
+		Queue<Integer> qy = new LinkedList<>();
+		qx.add(1);
+		qy.add(1);
+		visit[1][1] = 1;
 
-		xq.add((short) 0);
-		yq.add((short) 0);
-		visited[0][0] = (short) 1;
-
-		while (!xq.isEmpty()) {
-			short tmpx = xq.poll();
-			short tmpy = yq.poll();
-			int time = visited[tmpx][tmpy];
-
+		while (!qx.isEmpty()) {
+			int tmpx = qx.poll();
+			int tmpy = qy.poll();
+			// base condition
+			if (tmpx == n && tmpy == m) {
+				break;
+			}
 			for (int i=0 ; i<4 ; i++) {
-				short x = (short) (tmpx + dx[i]);
-				short y = (short) (tmpy + dy[i]);
-				if (x >= 0 && x < n && y >= 0 && y < m) {
-					if (adj[x][y] == 1) {
-						if (visited[x][y] > time + 1) {
-							xq.add(x);
-							yq.add(y);
-							visited[x][y] = (short) (time + 1);
-						}
+				int x = tmpx + dx[i];
+				int y = tmpy + dy[i];
+				if (1 <= x && x <= n && 1 <= y && y <= m) {
+					if (board[x][y] == 1 && visit[x][y] == 0) {
+						qx.add(x);
+						qy.add(y);
+						visit[x][y] = visit[tmpx][tmpy] + 1;
 					}
 				}
 			}
 		}
+		return visit[n][m];
 	}
 }
