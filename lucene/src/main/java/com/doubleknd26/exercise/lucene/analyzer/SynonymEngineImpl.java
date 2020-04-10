@@ -12,6 +12,9 @@ public class SynonymEngineImpl implements SynonymEngine {
 	}
 
 	static {
+		// NOTE: SynonymEngine 은 단방향 유사어만으로 구현되어 있다. 예를 들어,
+		// over는 above를 가지고 있지만, above는 over를 가지고 있지 않다. 보통
+		// 양뱡향 유사어로 구현한다는 점을 알아두자.
 		map.put("quick", new String[]{"fast", "speedy"});
 		map.put("jumps", new String[]{"leaps", "hops"});
 		map.put("over", new String[]{"above"});
