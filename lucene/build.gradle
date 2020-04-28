@@ -20,6 +20,8 @@ dependencies {
     compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: "${luceneVersion}"
     compile group: 'org.apache.lucene', name: 'lucene-misc', version: "${luceneVersion}"
 
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${jacksonVersion}"
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
 
