@@ -8,17 +8,20 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class CoupangMacroService extends MacroService {
+public class CoupangMaskMacroService extends MacroService {
 
-	public CoupangMacroService(MacroConfig.ServiceConfig config) {
+	public CoupangMaskMacroService(MacroConfig.ServiceConfig config) {
 		super(config);
 	}
 
 	@Override
+	protected String getName() {
+		return this.getClass().getSimpleName();
+	}
+
+	@Override
 	protected void login() {
-//		driver.get(config.getUrl());
-		WebElement loginBtn = driver.findClickableElement(By.id("login"));
-		driver.clickAndWait(loginBtn);
+		driver.get(config.getLoginPageUrl());
 		driver.sendKeyToElement(By.className("_loginIdInput"), config.getId());
 		driver.sendKeyToElement(By.className("_loginPasswordInput"), config.getPw());
 		WebElement submitBtn = driver.findClickableElement(By.className("login__button--submit"));
@@ -26,23 +29,15 @@ public class CoupangMacroService extends MacroService {
 	}
 
 	@Override
-	protected void runMacro() {
-		driver.get(WISH_LIST_URL);
-		printTryCount();
+	protected void run() {
+		driver.get(config.getMacroPageUrl());
 		while (true) {
-			tryAddWishItemToCart();
+			addWishListItemToCart();
 			visitNextWishListPage();
 		}
 	}
 
-	private static final String WISH_LIST_URL =
-			"https://wish-web.coupang.com/wishInitView.pang?useTopBanner=true&isHttps=true";
-
-	private void printTryCount() {
-		logger.info("TRY: " + ++count + " --------------------------------");
-	}
-
-	private void tryAddWishItemToCart() {
+	private void addWishListItemToCart() {
 		try {
 			List<WebElement> wishList = driver.findElements(By.className("wish-item"));
 			for (WebElement item : wishList) {
@@ -67,30 +62,6 @@ public class CoupangMacroService extends MacroService {
 			driver.clickAndWait(nextPageBtn, 3);
 		} catch (RuntimeException e) {
 			driver.refresh();
-			printTryCount();
 		}
 	}
-	
-//
-//	private void pay() {
-//		try {
-//			driver.get("https://cart.coupang.com/cartView.pang");
-//			WebElement allDealSelectBtn = driver.findClickableElement(By.className("all-deal-select"));
-//			if (!allDealSelectBtn.isSelected()) {
-//				driver.clickAndWait(allDealSelectBtn, 1);
-//			}
-//
-//			// go to pay page.
-//			WebElement payBtn = driver.findClickableElement(By.id("btnPay"));
-//			driver.clickAndWait(payBtn, 1);
-//
-//			// Because I already put cash into coupay accounts, It can buy through one click.
-//			WebElement paymentBtn = driver.findClickableElement(By.id("paymentBtn"));
-//			driver.clickAndWait(paymentBtn, 3);
-//			MessageService.getInstance().noti("구매 완료!", "channel");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			MessageService.getInstance().noti("구매 실패! 직접 장바구니를 확인하세요.", "channel");
-//		}
-//	}
 }

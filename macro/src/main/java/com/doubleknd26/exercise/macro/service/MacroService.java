@@ -1,6 +1,7 @@
 package com.doubleknd26.exercise.macro.service;
 
 import com.doubleknd26.exercise.macro.MacroConfig;
+import com.doubleknd26.exercise.macro.util.MessageService;
 import com.doubleknd26.exercise.macro.util.WebDriverWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,14 +22,19 @@ public abstract class MacroService {
 
 	protected abstract void login();
 
-	protected abstract void runMacro();
+	protected abstract void run();
+	
+	protected abstract String getName();
 	
 	public void start() {
 		try {
+			MessageService.getInstance().noti(getName() + " is started.");
 			login();
-			runMacro();
+			run();
 		} catch (Exception e) {
-			logger.info("exception occurred: " + e);
+			String message = String.format("exception: %s", e);
+			logger.error(message);
+			MessageService.getInstance().noti(getName() + " has " + message, "channel");
 			stop();
 		}
 	}

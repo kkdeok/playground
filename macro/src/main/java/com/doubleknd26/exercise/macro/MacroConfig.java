@@ -38,7 +38,9 @@ public class MacroConfig {
 			serviceConfigs.add(ServiceConfig.builder()
 					.type(macroType)
 					.name(ServiceName.fromString(String.valueOf(map.get("name"))))
-					.url(String.valueOf(map.get("url")))
+					.mainPageUrl(String.valueOf(map.get("main_page_url")))
+					.loginPageUrl(String.valueOf(map.get("login_page_url")))
+					.macroPageUrl(String.valueOf(map.get("macro_page_url")))
 					.id(String.valueOf(map.get("id")))
 					.pw(String.valueOf(map.get("pw")))
 					.userAgent(String.valueOf(map.get("user_agent")))
@@ -47,8 +49,12 @@ public class MacroConfig {
 		}
 	}
 
-	public String getSlackWebHookUrl() {
-		return defaultConfig.get("web_hook_url");
+	public String getMessageServiceUrl() {
+		return defaultConfig.get("slack_web_hook_url");
+	}
+	
+	public String getMessageServiceChannel() {
+		return defaultConfig.get("slack_channel");
 	}
 	
 	public List<ServiceConfig> getServiceConfigs() {
@@ -61,7 +67,9 @@ public class MacroConfig {
 	public static class ServiceConfig {
 		private MacroType type;
 		private ServiceName name;
-		private String url;
+		private String mainPageUrl;
+		private String loginPageUrl;
+		private String macroPageUrl;
 		private String id;
 		private String pw;
 		private String userAgent;

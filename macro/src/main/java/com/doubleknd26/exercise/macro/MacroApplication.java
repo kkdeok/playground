@@ -5,12 +5,11 @@ import com.beust.jcommander.Parameter;
 import com.doubleknd26.exercise.macro.service.MacroService;
 import com.doubleknd26.exercise.macro.service.MacroServiceFactory;
 import com.doubleknd26.exercise.macro.util.MacroType;
+import com.doubleknd26.exercise.macro.util.MessageService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 
 public class MacroApplication {
@@ -30,22 +29,28 @@ public class MacroApplication {
 	private void init() throws FileNotFoundException{
 		config = new MacroConfig(configPath, macroType);
 		numThreads = config.getServiceConfigs().size();
-		logger.info("numThreads: " + numThreads);
+		logger.info("thread num will be used: " + numThreads);
+		
+		MessageService.createInstance(config.getMessageServiceUrl(), config.getMessageServiceChannel());
+		logger.info("messageService is started.");
 
 		executorService = Executors.newFixedThreadPool(numThreads);
-		Runtime.getRuntime().addShutdownHook(new Thread(this::onStop));
+		Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
 	}
 	
 	private void start() {
-		List<Future> futures = new ArrayList<>();
-		for (MacroConfig.ServiceConfig serviceConfig : config.getServiceConfigs()) {
-			MacroService service = MacroServiceFactory.create(serviceConfig);
-			futures.add(executorService.submit(service::start));
-		}
+		logger.info(this.getClass().getSimpleName() + " is started");
+		config.getServiceConfigs().forEach(config -> {
+			MacroService service = MacroServiceFactory.create(config);
+			executorService.submit(service::start);
+		});
 		executorService.shutdown();
 	}
-	
-	private void onStop() {
+
+	/**
+	 * NOTE: Use std here since the logger may have been reset by its JVM shutdown hook.
+	 */
+	private void stop() {
 		if (executorService != null) {
 			try {
 				if (!executorService.awaitTermination(3, TimeUnit.SECONDS)) {

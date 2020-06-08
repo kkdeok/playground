@@ -32,8 +32,7 @@ public class MessageService {
 		return messageService;
 	}
 
-	public static synchronized MessageService createInstance(
-			String url, String channel) {
+	public static synchronized MessageService createInstance(String url, String channel) {
 		messageService = new MessageService(url, channel);
 		return messageService;
 	}
