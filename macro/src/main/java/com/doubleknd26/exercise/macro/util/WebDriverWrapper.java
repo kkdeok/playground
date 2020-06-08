@@ -40,11 +40,12 @@ public class WebDriverWrapper {
 				"enable-automation",
 				"disable-gpu",
 				"start-maximized"));
-		// override user-agent to avoid some access denied issue. Some
-		// web site block the user-agent with HeadlessChrome.
-		// https://stackoverflow.com/questions/54432980
-		options.addArguments(String.format("user-agent=%s", userAgent));
-//		options.addArguments("--disable-dev-shm-usage");
+		if (isHeadless) {
+			// override user-agent to avoid some access denied issue. Some
+			// web site block the user-agent with HeadlessChrome.
+			// https://stackoverflow.com/questions/54432980
+			options.addArguments(String.format("user-agent=%s", userAgent));
+		}
 		return options;
 	}
 
