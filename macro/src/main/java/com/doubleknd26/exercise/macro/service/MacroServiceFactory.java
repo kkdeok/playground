@@ -19,7 +19,8 @@ public class MacroServiceFactory {
 		if (ServiceName.COUPANG == config.getName()) {
 			return new CoupangMaskMacroService(config);
 		} else {
-			throw new RuntimeException("Unknown Mask Service Name: " + config.getName());
+			throw new RuntimeException(String.format("Unknown Service Name of %s: %s",
+					config.getType(),  config.getName()));
 		}
 	}
 }

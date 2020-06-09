@@ -1,0 +1,22 @@
+
+# This is how to create gpg file using this template.
+# to update gpg file, try this: rm template.yml.gpg && gpg -c --batch --passphrase "{passphrase}" template.yml
+# to read gpg file, try this: echo {passphrase} | gpg --batch --yes --passphrase-fd 0 template.yml.gpg
+
+DEFAULT:
+  slack_channel: noti # this is about slack channel
+  slack_web_hook_url: # this is for slack message
+  headless_user_agent: &headless_user_agent Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) 
+
+
+SERVICE:
+  MASK: # MACRO TYPE 
+    - name: COUPANG # SERVICE NAME 
+      main_page_url: https://www.coupang.com # MAIN PAGE
+      login_page_url: https://login.coupang.com/login/login.pang # LOGIN PAGE 
+      macro_page_url: https://wish-web.coupang.com/wishInitView.pang # MACRO PAGE
+      id: testid
+      pw: testpw 
+      headless: false
+      user_agent: *headless_user_agent
+    

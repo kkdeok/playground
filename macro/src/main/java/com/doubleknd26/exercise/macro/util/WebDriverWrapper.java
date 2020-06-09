@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
@@ -19,33 +18,37 @@ import java.util.function.Consumer;
 public class WebDriverWrapper {
 	private static final Logger logger = LogManager.getLogger();
 	private static final int RETRY_CNT = 2;
-
+	
 	private WebDriverWait waitDriver;
+	private ChromeOptions options;
 	private ChromeDriver driver;
 
 
 	public WebDriverWrapper(String userAgent, boolean isHeadless) {
-		this.driver = new ChromeDriver(getChromeOptions(userAgent, isHeadless));
+		setOptions(userAgent, isHeadless);
+		this.driver = new ChromeDriver(options);
 		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
 		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
 		this.driver.manage().deleteAllCookies();
 		this.waitDriver = new WebDriverWait(driver, 1);
 	}
-
-	private ChromeOptions getChromeOptions(String userAgent, boolean isHeadless) {
+	
+	private void setOptions(String userAgent, boolean isHeadless) {
 		ChromeOptions options = new ChromeOptions();
 		options.setHeadless(isHeadless);
-		options.setExperimentalOption("useAutomationExtension", false);
-		options.setExperimentalOption("excludeSwitches", Arrays.asList(
-				"enable-automation",
-				"disable-gpu",
-				"start-maximized"));
 		if (isHeadless) {
-			// override user-agent to avoid some access denied issue. Some
-			// web site block the user-agent with HeadlessChrome.
+			// override user-agent to avoid some access denied issue.	
+			// Some web site block the user-agent with HeadlessChrome.
 			// https://stackoverflow.com/questions/54432980
 			options.addArguments(String.format("user-agent=%s", userAgent));
 		}
+		options.setExperimentalOption("excludeSwitches", new String[]{
+				"enable-automation"
+		});
+		this.options = options;
+	}
+	
+	public ChromeOptions getOptions() {
 		return options;
 	}
 
