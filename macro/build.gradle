@@ -36,6 +36,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+task dockerBuild(type: Exec, dependsOn: ['shadowJar']) {
+    group = 'docker'
+    def pw = System.getenv("pw")
+//    doFirst {
+//        println "Building docker image " + tags.toString()
+//    }
+    def args = ['docker', 'build', '--build-arg', pw, '-t', 'macro', '.']
+    commandLine args
+}
+
 
 apply plugin: 'com.github.johnrengelman.shadow'
 
