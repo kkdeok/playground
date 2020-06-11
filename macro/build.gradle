@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-def jarName = 'Macro-Application'
+def jarName = 'macro-application'
 
 group 'com.doubleknd26.exercise.macro'
 version '1.0-SNAPSHOT'
@@ -38,11 +38,12 @@ dependencies {
 
 task dockerBuild(type: Exec, dependsOn: ['shadowJar']) {
     group = 'docker'
-    def pw = System.getenv("pw")
+    def pw = System.getenv("Ppw")
+    echo 'passphrase: ' + pw
 //    doFirst {
 //        println "Building docker image " + tags.toString()
 //    }
-    def args = ['docker', 'build', '--build-arg', pw, '-t', 'macro', '.']
+    def args = ['docker', 'build', '--build-arg', 'passphrase=' + pw, '-t', 'macro', '.']
     commandLine args
 }
 

@@ -3,19 +3,29 @@ MAINTAINER doubleknd26
 MAINTAINER doubleknd26@gmail.com
 
 ARG passphrase
+ENV MACRO_PATH=/program/exercise/macro
 
-#USER root
+USER root 
 RUN apt-get update
-#RUN apt-get install -y openjdk-8-jdk
+##RUN apt-get install -y openjdk-8-jdk
 RUN echo "deb https://dl.bintray.com/sobolevn/deb git-secret main" | sudo tee -a /etc/apt/sources.list
 RUN wget -qO - https://api.bintray.com/users/sobolevn/keys/gpg/public.key | sudo apt-key add -
 
-RUN mkdir -p /app/exercise
-#RUN git clone https://github.com/doubleknd26/exercise.git /app/exercise
+# Make directories
+RUN mkdir -p $MACRO_PATH
+RUN mkdir -p $MACRO_PATH/config
 
-WORKDIR /app/exercise/macro
+# Decrypt configuration file
 # https://unix.stackexchange.com/questions/60213/gpg-asks-for-password-even-with-passphrase
 RUN echo "passphrase: ${passphrase}"
 RUN echo ${passphrase} | gpg --batch --yes --passphrase-fd 0 config/prod.yml.gpg
 
-ENTRYPOINT ["./run.sh", "-b"]
+# Copy binary and others we need 
+COPY build/libs/macro-application-1.0-SNAPSHOT-all.jar $MACRO_PATH
+COPY docker/run.sh $MACRO_PATH/run.sh
+RUN chmod 755 $MACRO_PATH/run.sh
+COPY config/prod.yml $MACRO_PATH/config/prod.yml
+RUN chmod 755 $MACRO_PATH/config/prod.yml
+
+# Expose entrypoint script file
+ENTRYPOINT ["/program/exercise/macro/run.sh"]
