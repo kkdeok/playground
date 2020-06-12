@@ -46,6 +46,9 @@ public class WebDriverWrapper {
 		options.setExperimentalOption("excludeSwitches", new String[]{
 				"enable-automation"
 		});
+		// I suffered issue about 'Timed out receiving message from renderer: -0.100'
+		// PageLoadStrategy.NONE is an experimental option to solve above issue. ref)
+		// https://stackoverflow.com/questions/48450594/selenium-timed-out-receiving-message-from-renderer
 		options.setPageLoadStrategy(PageLoadStrategy.NONE);
 		this.options = options;
 	}
