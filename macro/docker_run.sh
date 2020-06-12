@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 
-if [ $# -ne 1 ]; then
-  echo '[ERROR] please add your gpg password as an args e.g) ./docker_run.sh {gpg_password}'
+if [ $# -ne 2 ]; then
+  echo '[ERROR] please add your macro type and condig file password as args e.g) ./docker_run.sh {macro_type} {gpg_password}'
   exit 1 
 fi
 
-gpg_password=$1
-echo '[INFO] your gpg password is' ${gpg_password}
+macro_type=$1
+config_file_password=$2
+echo '[INFO] macro type:' $macro_type
+echo '[INFO] config file password:' $config_file_password 
+
+#TODO: check macro type format
 
 # build docker
-../gradlew clean :macro:dockerBuild -Ppw=${gpg_password}
+../gradlew clean :macro:dockerBuild -Dtype=$macro_type -Dpw=$config_file_password
 
 # run docker
 docker run -d -p 4444:4444 -p 11619:11619 --shm-size=128m -v /tmp/logs:/tmp/logs --name macro_app macro

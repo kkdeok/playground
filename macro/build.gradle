@@ -38,12 +38,9 @@ dependencies {
 
 task dockerBuild(type: Exec, dependsOn: ['shadowJar']) {
     group = 'docker'
-    def pw = System.getenv("Ppw")
-    echo 'passphrase: ' + pw
-//    doFirst {
-//        println "Building docker image " + tags.toString()
-//    }
-    def args = ['docker', 'build', '--build-arg', 'passphrase=' + pw, '-t', 'macro', '.']
+    def macroType = System.getProperty("type")
+    def passphrase = System.getProperty("pw")
+    def args = ['docker', 'build', '--build-arg', 'PASSPHRASE=' + passphrase, '--build-arg', 'MACRO_TYPE=' + macroType, '-t', 'macro', '.']
     commandLine args
 }
 
