@@ -3,6 +3,7 @@ package com.doubleknd26.exercise.macro.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -45,6 +46,7 @@ public class WebDriverWrapper {
 		options.setExperimentalOption("excludeSwitches", new String[]{
 				"enable-automation"
 		});
+		options.setPageLoadStrategy(PageLoadStrategy.NONE);
 		this.options = options;
 	}
 	
