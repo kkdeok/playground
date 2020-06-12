@@ -61,7 +61,13 @@ public class MacroApplication {
 				executorService.shutdownNow();
 			}
 		}
-		System.out.println("MacroApplication is finished.");
+		String endMessage = "MacroApplication is finished.";  
+		try {
+			MessageService.getInstance().noti(endMessage);
+		} catch (NullPointerException e) {
+			// do nothing
+		}
+		System.out.println(endMessage);
 	}
 	
 	public static void main(String[] args) throws Exception {
