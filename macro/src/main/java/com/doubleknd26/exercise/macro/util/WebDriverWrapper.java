@@ -28,8 +28,8 @@ public class WebDriverWrapper {
 	public WebDriverWrapper(String userAgent, boolean isHeadless) {
 		setOptions(userAgent, isHeadless);
 		this.driver = new ChromeDriver(options);
-		this.driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-		this.driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+		this.driver.manage().timeouts().setScriptTimeout(30, TimeUnit.SECONDS);
 		this.driver.manage().deleteAllCookies();
 		this.waitDriver = new WebDriverWait(driver, 1);
 	}
