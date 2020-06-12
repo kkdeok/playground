@@ -27,14 +27,16 @@ public abstract class MacroService {
 	protected abstract String getName();
 	
 	public void start() {
+		MessageService messageService = MessageService.getInstance();
 		try {
-			MessageService.getInstance().noti(getName() + " is started.");
+			messageService.noti(getName() + " is started.");
 			login();
 			run();
 		} catch (Exception e) {
-			String message = String.format("exception: %s", e);
-			logger.error(message);
-			MessageService.getInstance().noti(getName() + " has " + message, "channel");
+			String errMsg = String.format("%s has exception: %s", getName(), e);
+			logger.error(errMsg);
+			messageService.noti(errMsg, "channel");
+		} finally {
 			stop();
 		}
 	}
