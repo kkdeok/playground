@@ -1,32 +1,36 @@
 group 'com.doubleknd26.exercise'
-version '1.0-SNAPSHOT'
 
 buildscript {
-    repositories {
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        mavenLocal()
-    }
-    dependencies {
-        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
-    }
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+		mavenLocal()
+	}
+	dependencies {
+		classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
+		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
+	}
 }
 
 def junitVersion = "4.12"
 
 subprojects {
-    apply plugin: 'java'
-    compileJava {options.encoding = "UTF-8"}
-    sourceCompatibility = 1.8
+	apply plugin: 'java'
+	apply plugin: 'com.github.johnrengelman.shadow'
+	
+	compileJava {
+		options.encoding = "UTF-8"
+	}
+	
+	sourceCompatibility = 1.8
 
-    repositories {
-        mavenCentral()
-    }
+	repositories {
+		mavenCentral()
+	}
 
-    dependencies {
-        testCompile group: 'junit', name: 'junit', version: junitVersion
-        testCompile 'org.mockito:mockito-all:1.10.19'
-    }
+	dependencies {
+		testCompile group: 'junit', name: 'junit', version: junitVersion
+		testCompile 'org.mockito:mockito-all:1.10.19'
+	}
 }
