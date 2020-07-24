@@ -1,7 +1,7 @@
 syntax = "proto3";
 package grpc;
 
-option java_package = "com.doubleknd26.exercise.grpc";
+option java_package = "com.kkd.exercise.grpc";
 option java_multiple_files = true;
 
 
