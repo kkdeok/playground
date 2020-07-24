@@ -14,4 +14,4 @@ metastore_db/
 lucene/index/
 .gitsecret/keys/random_seed
 !*.secret
-macro/config/prod.yml
+hbase/target/

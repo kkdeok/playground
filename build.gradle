@@ -29,6 +29,13 @@ subprojects {
 		mavenCentral()
 	}
 
+	gradle.projectsEvaluated {
+		tasks.withType(JavaCompile) {
+			// Turn this on to see unchecked errors.
+			// options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+		}
+	}
+
 	dependencies {
 		testCompile group: 'junit', name: 'junit', version: junitVersion
 		testCompile 'org.mockito:mockito-all:1.10.19'

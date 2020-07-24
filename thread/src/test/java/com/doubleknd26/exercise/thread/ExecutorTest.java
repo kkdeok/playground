@@ -2,6 +2,7 @@ package com.doubleknd26.exercise.thread;
 
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.*;
@@ -33,7 +34,7 @@ public class ExecutorTest {
         return NUM++;
     }
 
-    @Test
+    @Ignore
     public void testFixedThreadPoolWithFuture() {
         ExecutorService service = Executors.newFixedThreadPool(2);
         Callable<Integer> task = this::getCount;
