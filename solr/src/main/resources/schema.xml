@@ -1,0 +1,8 @@
+<schema name="example" version="1.5">
+  <fields>
+    <field name="id" type="string" stored="false"/>
+  </fields>
+  <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+  </types>
+</schema>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <luceneMatchVersion>5.5.4</luceneMatchVersion>
+
+  <dataDir>${solr.solr.home:}/data</dataDir>
+  <codecFactory class="solr.SchemaCodecFactory"></codecFactory>
+</config>
