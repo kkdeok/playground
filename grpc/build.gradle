@@ -1,4 +1,4 @@
-group 'com.doubleknd26.exercise.grpc'
+group 'com.kkd.exercise.grpc'
 version '1.0-SNAPSHOT'
 
 
@@ -9,10 +9,7 @@ def nettyTcNativeVersion = '2.0.7.Final'
 def protobufVersion = '3.0.0'
 def protocVersion = '3.0.0'
 
-apply plugin: 'java'
 apply plugin: 'com.google.protobuf'
-
-sourceCompatibility = 1.8
 
 buildscript {
     repositories {

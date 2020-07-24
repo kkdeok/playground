@@ -1,4 +1,4 @@
-group 'com.doubleknd26.exercise.thread'
+group 'com.kkd.exercise.thread'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'

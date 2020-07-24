@@ -2,7 +2,7 @@ plugins {
     id 'scala'
 }
 
-group 'com.doubleknd26.exercise.hive'
+group 'com.kkd.exercise.hive'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8

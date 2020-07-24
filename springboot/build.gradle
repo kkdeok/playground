@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
-group 'com.doubleknd26.exercise.springboot'
+group 'com.kkd.exercise.springboot'
 version '1.0-SNAPSHOT'
 
 dependencies {

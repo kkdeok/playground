@@ -1,15 +1,5 @@
-plugins {
-    id 'java'
-}
-
-group 'com.doubleknd26.exercise.lucene'
+group 'com.kkd.exercise.lucene'
 version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
 
 ext.luceneVersion = '5.5.4'
 ext.jacksonVersion = '2.8.9'
