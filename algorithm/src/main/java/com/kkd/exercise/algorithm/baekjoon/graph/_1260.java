@@ -1,7 +1,6 @@
 package com.kkd.exercise.algorithm.baekjoon.graph;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -10,58 +9,58 @@ import java.util.Queue;
  * https://www.acmicpc.net/problem/1260
  */
 public class _1260 {
-	private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	
 	private static final int SIZE = 1001;
-	private static final int[][] board = new int[SIZE][SIZE];
-	private static boolean[] check = new boolean[SIZE];
+	private static boolean[][] BOARD = new boolean[SIZE][SIZE];
+	private static boolean[] VISITED = new boolean[SIZE];
+	
+	public static void main(String[] args) throws Exception {
+		String[] line = br.readLine().split(" ");
+		int n = Integer.parseInt(line[0]);
+		int m = Integer.parseInt(line[1]);
+		int v = Integer.parseInt(line[2]);
 
-	private static void start() throws IOException {
-		String[] input = br.readLine().split(" ");
-		int n = Integer.parseInt(input[0]);
-		int m = Integer.parseInt(input[1]);
-		int v = Integer.parseInt(input[2]);
-		for (int i=0; i<m ; i++) {
-			input = br.readLine().split(" ");
-			int x = Integer.parseInt(input[0]);
-			int y = Integer.parseInt(input[1]);
-			board[x][y] = board[y][x] = 1;
+		for (int i=0 ; i<m ; i++) {
+			line = br.readLine().split(" ");
+			int x = Integer.parseInt(line[0]);
+			int y = Integer.parseInt(line[1]);
+			BOARD[x][y] = BOARD[y][x] = true;
 		}
-		doDFS(v, n);
-		Arrays.fill(check, false);
-		System.out.println();
-		doBFS(v, n);
-	}
 
-	private static void doDFS(int v, int n) {
-		check[v] = true;
-		System.out.print(v + " ");
+		doDFS(n, v);
+		Arrays.fill(VISITED, false);
+		bw.write("\n");
+		doBFS(n, v);
+		bw.write("\n");
+		bw.flush();
+	}
+	
+	private static void doDFS(int n, int v) throws IOException {
+		VISITED[v] = true;
+		bw.write(v + " ");
 		for (int i=1 ; i<=n ; i++) {
-			if (board[v][i] == 1 && !check[i]) {
-				doDFS(i, n);
+			if (BOARD[v][i] && !VISITED[i]) {
+				doDFS(n, i);
 			}
 		}
 	}
-
-	private static void doBFS(int v, int n) {
+	
+	private static void doBFS(int n , int v) throws IOException {
 		Queue<Integer> q = new LinkedList<>();
 		q.add(v);
-		check[v] = true;
-
+		VISITED[v] = true;
+		
 		while (!q.isEmpty()) {
-			int tmpv = q.poll();
-			System.out.print(tmpv + " ");
+			int tempv = q.poll();
+			bw.write(tempv + " ");
 			for (int i=1 ; i<=n ; i++) {
-				if (board[tmpv][i] == 1 && !check[i]) {
+				if (BOARD[tempv][i] && !VISITED[i]) {
 					q.add(i);
-					check[i] = true;
+					VISITED[i] = true;
 				}
 			}
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		start();
-		br.close();
 	}
 }
