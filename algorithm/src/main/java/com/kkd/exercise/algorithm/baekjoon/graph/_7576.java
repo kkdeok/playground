@@ -11,80 +11,75 @@ import java.util.*;
  */
 public class _7576 {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-
+	
+	private static int size = 1001;
+	private static int[][] board = new int[size][size];
+	private static int[][] visit = new int[size][size];
+	
 	private static int[] dx = new int[]{0, 0, -1, 1};
 	private static int[] dy = new int[]{-1, 1, 0, 0};
-
-	private static int[][] visit = new int[1000][1000];
-	private static int[][] adj = new int[1000][1000];
-
-	public static void main (String[] args) throws Exception {
-		String[] input = br.readLine().split(" ");
-		int m = Integer.parseInt(input[0]);
-		int n = Integer.parseInt(input[1]);
-
-		for (int i=0 ; i<n ; i++) {
-			adj[i] = Arrays.stream(br.readLine().split(" "))
-					.mapToInt(Integer::parseInt).toArray();
+	
+	public static void main(String[] args) throws Exception {
+		String[] line = br.readLine().split(" ");
+		int m = Integer.parseInt((line[0]));
+		int n = Integer.parseInt((line[1]));
+		
+		// init
+		for (int i=0 ; i<size ; i++) {
 			Arrays.fill(visit[i], -1);
 		}
-
-		search(m, n);
-
-		int ret = 0;
-		boolean unripe = false;
+		
 		for (int i=0 ; i<n ; i++) {
+			line = br.readLine().split(" ");
 			for (int j=0 ; j<m ; j++) {
-				if (visit[i][j] == -1 && adj[i][j] == 0) {
-					unripe = true;
-					ret = -1;
-					break;
-				}
-				ret = Math.max(ret, visit[i][j]);
-			}
-			if (unripe) {
-				break;
+				int val = Integer.parseInt(line[j]);
+				board[i][j] = val;
 			}
 		}
-		bw.write(ret + "\n");
-		bw.flush();
-		bw.close();
-		br.close();
+		
+		int ans = doBFS(n, m); // n = 세로, m = 가로
+		System.out.println(ans);
 	}
-
-	private static void search(int m, int n) {
+	
+	private static int doBFS(int n, int m) {
 		Queue<Integer> xq = new LinkedList<>();
 		Queue<Integer> yq = new LinkedList<>();
-
-		for (int i=0 ; i<n ; i++) {
-			for (int j=0 ; j<m ; j++) {
-				if (adj[i][j] == 1) {
-					xq.add(i);
-					yq.add(j);
-					visit[i][j] = 0;
+		
+		for (int x=0 ; x<n ; x++) {
+			for (int y=0 ; y<m ; y++) {
+				if (board[x][y] == 1) {
+					xq.add(x); yq.add(y);
+					visit[x][y] = 0;
 				}
 			}
 		}
-
+		
 		while (!xq.isEmpty()) {
-			int tmpx = xq.poll();
-			int tmpy = yq.poll();
-			int days = visit[tmpx][tmpy];
-
+			int tempx = xq.poll();
+			int tempy = yq.poll();
+			
 			for (int i=0 ; i<4 ; i++) {
-				int x = tmpx + dx[i];
-				int y = tmpy + dy[i];
-				if (x >= 0 && x < n && y >= 0 && y < m) {
-					if (adj[x][y] == 0) {
-						if (visit[x][y] == -1 || visit[x][y] > days + 1) {
-							xq.add(x);
-							yq.add(y);
-							visit[x][y] = days + 1;
-						}
+				int x = tempx + dx[i];
+				int y = tempy + dy[i];
+				if (x>=0 && x<n && y>=0 && y<m) {
+					if (board[x][y] == 0 && visit[x][y] == -1) {
+						board[x][y] = 1;
+						xq.add(x); yq.add(y);
+						visit[x][y] = visit[tempx][tempy] + 1;
 					}
 				}
 			}
 		}
+		
+		int ans = -1;
+		for (int i=0 ; i<n ; i++) {
+			for (int j=0 ; j<m ; j++) {
+				if (board[i][j] == 0) {
+					return -1;
+				}
+				ans = Math.max(ans, visit[i][j]);
+			}
+		}
+		return ans;
 	}
 }
