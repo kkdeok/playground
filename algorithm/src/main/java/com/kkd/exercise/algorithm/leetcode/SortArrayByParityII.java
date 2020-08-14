@@ -9,12 +9,12 @@ import java.util.Arrays;
 /**
  * https://leetcode.com/problems/sort-array-by-parity-ii/
  */
-public class _922 {
+public class SortArrayByParityII {
 	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	public static void main(String[] args) throws Exception {
-		_922 main = new _922();
+		SortArrayByParityII main = new SortArrayByParityII();
 		main.start();
 		bw.flush();
 		bw.close();

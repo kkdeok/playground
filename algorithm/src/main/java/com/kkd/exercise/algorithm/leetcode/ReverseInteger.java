@@ -12,30 +12,31 @@ public class ReverseInteger {
 		Solution sol = new Solution();
 		System.out.println(sol.reverse(Integer.MIN_VALUE));
 	}
-}
 
-class Solution {
-	public int reverse(int x) {
-		if (x == 0) {
-			return x;
-		}
-		boolean isNegative = x < 0;
-		x = Math.abs(x);
-		List<String> list = new ArrayList<>();
-		while (x != 0) {
-			int tmp = x % 10;
-			list.add(String.valueOf(tmp));
-			x /= 10;
-		}
-		StringBuilder sb = new StringBuilder();
-		for (String s : list) {
-			sb.append(s);
-		}
-		try {
-			int ret = Integer.parseInt(sb.toString());
-			return isNegative ? ret * -1 : ret;
-		} catch (NumberFormatException e) {
-			return 0;
+
+	private static class Solution {
+		public int reverse(int x) {
+			if (x == 0) {
+				return x;
+			}
+			boolean isNegative = x < 0;
+			x = Math.abs(x);
+			List<String> list = new ArrayList<>();
+			while (x != 0) {
+				int tmp = x % 10;
+				list.add(String.valueOf(tmp));
+				x /= 10;
+			}
+			StringBuilder sb = new StringBuilder();
+			for (String s : list) {
+				sb.append(s);
+			}
+			try {
+				int ret = Integer.parseInt(sb.toString());
+				return isNegative ? ret * -1 : ret;
+			} catch (NumberFormatException e) {
+				return 0;
+			}
 		}
 	}
 }

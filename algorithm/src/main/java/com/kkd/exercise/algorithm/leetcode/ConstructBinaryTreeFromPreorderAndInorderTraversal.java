@@ -7,7 +7,7 @@ import java.util.Stack;
 /**
  * https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
  */
-public class _100 {
+public class ConstructBinaryTreeFromPreorderAndInorderTraversal {
 
 	public class TreeNode {
 		int val;
