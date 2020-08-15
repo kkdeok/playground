@@ -1,4 +1,4 @@
-package com.kkd.exercise.algorithm;
+package com.kkd.exercise.algorithm.amazon;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.kkd.exercise.algorithm;
+package com.kkd.exercise.algorithm.amazon;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
