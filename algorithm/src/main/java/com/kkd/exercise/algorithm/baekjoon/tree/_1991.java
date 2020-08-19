@@ -9,24 +9,24 @@ import java.util.Stack;
  */
 public class _1991 {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	
+
 	static class Node {
 		char val;
 		Node left;
 		Node right;
 	}
-	
+
 	static class Pair {
 		char leftVal;
 		char rightVal;
 	}
-	
+
 	private static Pair[] tree;
-	
+
 	public static void main(String[] args) throws Exception {
 		int n = Integer.parseInt(br.readLine());
 		tree = new Pair[26];
-		for (int i=0 ; i<n ; i++) {
+		for (int i = 0; i < n; i++) {
 			char[] chars = br.readLine().toCharArray();
 			char a = chars[0];
 			char b = chars[2];
@@ -35,108 +35,111 @@ public class _1991 {
 			tree[a - 'A'].leftVal = b;
 			tree[a - 'A'].rightVal = c;
 		}
-		
+
 		Node root = null;
 		root = makeTree(root, 'A');
-		
+
 		preorder(root);
 		inorder(root);
 		postorder(root);
 	}
-	
+
 	private static Node makeTree(Node node, char val) {
 		if (node == null) {
 			node = new Node();
 			node.val = val;
 			node.left = node.right = null;
 		}
-		
-		char leftVal = tree[val-'A'].leftVal;
-		char rightVal = tree[val-'A'].rightVal;
-		
-		if (leftVal>='A' && leftVal<='Z') {
+
+		char leftVal = tree[val - 'A'].leftVal;
+		char rightVal = tree[val - 'A'].rightVal;
+
+		if (leftVal >= 'A' && leftVal <= 'Z') {
 			node.left = makeTree(node.left, leftVal);
 		}
-		
+
 		if (rightVal >= 'A' && rightVal <= 'Z') {
 			node.right = makeTree(node.right, rightVal);
 		}
-		
+
 		return node;
 	}
-	
+
 	// root -> left -> right
 	private static void preorder(Node node) {
-		Stack<Node> s = new Stack<>();
-		s.push(node);
-		while (!s.isEmpty()) {
-			Node curr = s.pop();
-			System.out.print(curr.val);
-			if (curr.right != null) {
-				s.push(curr.right);
+		Stack<Node> stack = new Stack<>();
+		stack.push(node);
+
+		while(!stack.isEmpty()) {
+			node = stack.pop();
+			System.out.print(node.val);
+
+			if (node.right != null) { // right first! because it’s stack.
+				stack.push(node.right);
 			}
-			if (curr.left != null) {
-				s.push(curr.left);
+			if (node.left != null) {
+				stack.push(node.left);
 			}
 		}
 		System.out.println();
 	}
-	
+
 	// left -> root -> right
 	private static void inorder(Node node) {
-		Stack<Node> s = new Stack<>();
-		// 왼쪽노드들을 모두다 넣어준다.
+		Stack<Node> stack = new Stack<>();
 		while (node != null) {
-			s.push(node);
+			stack.push(node);
 			node = node.left;
 		}
-		
-		while (!s.isEmpty()) {
-			Node curr = s.pop();
-			System.out.print(curr.val);
-			
-			if (curr.right != null) {
-				curr = curr.right;
-				s.push(curr);
-				while (curr.left != null) {
-					s.push(curr.left);
-					curr = curr.left;
+
+		while (!stack.isEmpty()) {
+			node = stack.pop();
+			System.out.print(node.val);
+
+			if (node.right != null) {
+				node = node.right;
+				stack.push(node);
+
+				while (node.left != null) {
+					stack.push(node.left);
+					node = node.left;
 				}
 			}
 		}
 		System.out.println();
 	}
-	
+
 	// left -> right -> root
 	private static void postorder(Node node) {
 		Stack<Node> s = new Stack<>();
-		Stack<Node> temp = new Stack<>();
-		
-		// 왼쪽 노드들을 모두 다 넣어준다.
+		Stack<Node> t = new Stack<>(); // temp stack
+
 		while (node != null) {
 			s.push(node);
-			temp.push(node);
+			t.push(node);
 			node = node.right;
 		}
-		
-		while (!temp.isEmpty()) {
-			node = temp.pop();
-			
+
+		while (!t.isEmpty()) {
+			node = t.pop();
+
 			if (node.left != null) {
 				node = node.left;
 				s.push(node);
-				temp.push(node);
+				t.push(node);
+
 				while (node.right != null) {
 					s.push(node.right);
-					temp.push(node.right);
+					t.push(node.right);
 					node = node.right;
 				}
 			}
 		}
-		
+
 		while (!s.isEmpty()) {
 			System.out.print(s.pop().val);
 		}
+		
 		System.out.println();
 	}
 	
