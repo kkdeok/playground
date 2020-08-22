@@ -1,88 +1,54 @@
 package com.kkd.exercise.algorithm.baekjoon.backtracking;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 /**
  * https://www.acmicpc.net/problem/14888
  */
 public class _14888 {
-	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	private static int[] arr;
-	private static int[] ops;
-	private static Stack<Integer> s = new Stack<>();
-	private static int min = Integer.MAX_VALUE;
-	private static int max = Integer.MIN_VALUE;
-
-	private static void start() throws IOException {
-		int n = Integer.parseInt(br.readLine());
-		arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-		ops = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-
-		search(n);
-		bw.write(max + "\n");
-		bw.write(min + "\n");
-	}
-
-	private static void search(int n) {
-		for (int i=0 ; i<4; i++) {
-			if (ops[i] > 0) {
-				ops[i]--;
-				dfs(i, n);
-				ops[i]++;
-			}
-		}
-	}
-
-	private static void dfs(int op, int n) {
-		s.push(op);
-		if (s.size() == n-1) {
-			calculate(n);
-		} else {
-			search(n);
-		}
-		s.pop();
-	}
-
-	private static void calculate(int n) {
-		int num = arr[0];
-		for (int i=1 ; i<n ; i++) {
-			int tmp = arr[i];
-			int op = s.get(i-1);
-			num = operate(op, num, tmp);
-		}
-		if (num < min) {
-			min = num;
-		}
-		if (num > max) {
-			max = num;
-		}
-	}
-
-	private static int operate(int op, int num, int tmp) {
-		if (op == 0) {
-			return num + tmp;
-		} else if (op == 1) {
-			return num - tmp;
-		} else if (op == 2) {
-			return num * tmp;
-		} else {
-			if (num < 0) {
-				num *= -1;
-				return num / tmp * -1;
-			} else {
-				return num / tmp;
-			}
-		}
-	}
-
+	private static List<Integer> ansList = new ArrayList<>();
+	
 	public static void main(String[] args) throws Exception {
-		start();
-		bw.flush();
-		bw.close();
-		br.close();
+		int n = Integer.parseInt(br.readLine());
+		int[] arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		int[] op = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+
+		process(arr, op, 1, arr[0]);
+		System.out.println(ansList.stream().mapToInt(i -> i).max().getAsInt());
+		System.out.println(ansList.stream().mapToInt(i -> i).min().getAsInt());
 	}
+
+
+	public static void process(int[] arr, int[] op, int idx, int result) {
+		if (!hasOperator(op)) {
+			ansList.add(result);
+		}
+
+		for (int i=0 ; i<4 ; i++) {
+			if (op[i] == 0) continue;
+
+			op[i]--;
+			if (i == 0) process(arr, op, idx + 1, result + arr[idx]);
+			else if (i == 1) process(arr, op, idx + 1, result - arr[idx]);
+			else if (i == 2) process(arr, op, idx + 1, result * arr[idx]);
+			else process(arr, op, idx + 1, result / arr[idx]);
+			op[i]++;
+		}
+	}
+
+	public static boolean hasOperator(int[] op) {
+		for (int i=0 ; i<4 ; i++) {
+			if (op[i] > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 }
