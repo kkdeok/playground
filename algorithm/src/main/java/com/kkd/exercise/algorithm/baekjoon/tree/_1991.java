@@ -65,69 +65,70 @@ public class _1991 {
 		return node;
 	}
 
-	// root -> left -> right
-	private static void preorder(Node node) {
-		Stack<Node> stack = new Stack<>();
-		stack.push(node);
+	// preorder
+	public static void preorder(Node root) {
+		Stack<Node> s = new Stack<>();
+		s.push(root);
 
-		while(!stack.isEmpty()) {
-			node = stack.pop();
-			System.out.print(node.val);
-
-			if (node.right != null) { // right first! because it’s stack.
-				stack.push(node.right);
+		StringBuilder sb = new StringBuilder();
+		while (!s.isEmpty()) {
+			Node node = s.pop();
+			sb.append(node.val);
+			if (node.right != null) {
+				s.push(node.right);
 			}
 			if (node.left != null) {
-				stack.push(node.left);
+				s.push(node.left);
 			}
 		}
-		System.out.println();
+		System.out.println(sb.toString());
 	}
 
-	// left -> root -> right
-	private static void inorder(Node node) {
-		Stack<Node> stack = new Stack<>();
-		while (node != null) {
-			stack.push(node);
-			node = node.left;
+
+	// inorder = left -> root -> right;
+	public static void inorder(Node root) {
+		Stack<Node> s = new Stack<>();
+		while (root != null) {
+			s.push(root);
+			root = root.left;
 		}
 
-		while (!stack.isEmpty()) {
-			node = stack.pop();
-			System.out.print(node.val);
+		StringBuilder sb = new StringBuilder();
+		while (!s.isEmpty()) {
+			Node node = s.pop();
+			sb.append(node.val);
 
 			if (node.right != null) {
 				node = node.right;
-				stack.push(node);
-
+				s.push(node);
 				while (node.left != null) {
-					stack.push(node.left);
+					s.push(node.left);
 					node = node.left;
 				}
 			}
 		}
-		System.out.println();
+		System.out.println(sb.toString());
 	}
 
-	// left -> right -> root
-	private static void postorder(Node node) {
-		Stack<Node> s = new Stack<>();
-		Stack<Node> t = new Stack<>(); // temp stack
 
-		while (node != null) {
-			s.push(node);
-			t.push(node);
-			node = node.right;
+	// postorder = left -> right -> root
+	public static void postorder(Node root) {
+		Stack<Node> s = new Stack<>();
+		Stack<Node> t = new Stack<>();
+
+		while (root != null) {
+			s.push(root);
+			t.push(root);
+			root = root.right;
 		}
 
 		while (!t.isEmpty()) {
-			node = t.pop();
+			Node node = t.pop();
 
 			if (node.left != null) {
 				node = node.left;
 				s.push(node);
 				t.push(node);
-
 				while (node.right != null) {
 					s.push(node.right);
 					t.push(node.right);
@@ -135,13 +136,13 @@ public class _1991 {
 				}
 			}
 		}
-
+		StringBuilder sb = new StringBuilder();
 		while (!s.isEmpty()) {
-			System.out.print(s.pop().val);
+			sb.append(s.pop().val);
 		}
-		
-		System.out.println();
+		System.out.println(sb.toString());
 	}
+	
 	
 	
 /* 
