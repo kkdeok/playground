@@ -1,9 +1,7 @@
 package com.kkd.exercise.algorithm.baekjoon.graph;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * https://www.acmicpc.net/problem/1260
@@ -13,7 +11,7 @@ public class _1260 {
 	private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	
 	private static final int SIZE = 1001;
-	private static boolean[][] BOARD = new boolean[SIZE][SIZE];
+	private static Set<Integer>[] BOARD = new TreeSet[SIZE]; 
 	private static boolean[] VISITED = new boolean[SIZE];
 	
 	public static void main(String[] args) throws Exception {
@@ -21,12 +19,17 @@ public class _1260 {
 		int n = Integer.parseInt(line[0]);
 		int m = Integer.parseInt(line[1]);
 		int v = Integer.parseInt(line[2]);
+		
+		for (int i=0 ; i<=n ; i++) {
+			BOARD[i] = new TreeSet<>();
+		}
 
 		for (int i=0 ; i<m ; i++) {
 			line = br.readLine().split(" ");
 			int x = Integer.parseInt(line[0]);
 			int y = Integer.parseInt(line[1]);
-			BOARD[x][y] = BOARD[y][x] = true;
+			BOARD[x].add(y);
+			BOARD[y].add(x);
 		}
 
 		doDFS(n, v);
@@ -40,9 +43,10 @@ public class _1260 {
 	private static void doDFS(int n, int v) throws IOException {
 		VISITED[v] = true;
 		bw.write(v + " ");
-		for (int i=1 ; i<=n ; i++) {
-			if (BOARD[v][i] && !VISITED[i]) {
-				doDFS(n, i);
+		
+		for (int next: BOARD[v]) {
+			if (!VISITED[next]) {
+				doDFS(n, next);
 			}
 		}
 	}
@@ -55,10 +59,10 @@ public class _1260 {
 		while (!q.isEmpty()) {
 			int tempv = q.poll();
 			bw.write(tempv + " ");
-			for (int i=1 ; i<=n ; i++) {
-				if (BOARD[tempv][i] && !VISITED[i]) {
-					q.add(i);
-					VISITED[i] = true;
+			for (int next : BOARD[tempv]) {
+				if (!VISITED[next]) {
+					q.add(next);
+					VISITED[next] = true;
 				}
 			}
 		}

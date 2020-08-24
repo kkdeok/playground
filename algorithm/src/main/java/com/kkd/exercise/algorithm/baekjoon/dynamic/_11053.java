@@ -21,27 +21,25 @@ public class _11053 {
         for (int i=0 ; i<n ; i++) {
             arr[i] = Integer.parseInt(line[i]);
         }
-        
+
         int ans = 0;
-        for (int i=0 ; i<n ; i++) {
-            doDP(i);
+        for (int i=0 ; i<n ; i++) { 
+            func(i);
             ans = Math.max(ans, memo[i]);
         }
         System.out.println(ans);
     }
-    
-    private static int doDP(int n) {
-        if (memo[n] != 0) {
-            return memo[n];
-        }
-        
+
+    private static int func(int x) {
+        if (memo[x] != 0) return memo[x];
+
         int ans = 1;
-        for (int i=n-1 ; i>=0 ; i--) {
-            if (arr[n] > arr[i]) {
-                int temp = doDP(i) + 1;
-                ans = Math.max(ans, temp);
+        for (int i=0 ; i<x ; i++) {
+            if (arr[i] < arr[x]) {
+                ans = Math.max(ans, func(i) + 1);
             }
         }
-        return memo[n] = ans;
+        return memo[x] = ans;
     }
+
 }
