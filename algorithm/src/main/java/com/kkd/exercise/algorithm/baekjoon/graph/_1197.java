@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * https://www.acmicpc.net/problem/1197
+ * MST (minimum spanning tree) - Prim Algorithm
  */
 public class _1197 {
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
