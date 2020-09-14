@@ -1,4 +1,4 @@
-group 'com.kkd.exercise.spark'
+group 'com.kkd.study.spark'
 version '1.0-SNAPSHOT'
 
 dependencies {

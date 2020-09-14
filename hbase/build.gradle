@@ -1,4 +1,4 @@
-group 'com.kkd.exercise.hbase'
+group 'com.kkd.study.hbase'
 version '1.0-SNAPSHOT'
 
 
@@ -35,7 +35,7 @@ dependencies {
 shadowJar {
     zip64 true
     manifest {
-        attributes 'Main-Class': 'com.doubleknd26.exercise.hbase.HbaseTableCreator'
+        attributes 'Main-Class': 'com.doubleknd26.study.hbase.HbaseTableCreator'
     }
 }
 

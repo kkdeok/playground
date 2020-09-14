@@ -1,4 +1,4 @@
-group 'com.kkd.exercise.solr'
+group 'com.kkd.study.solr'
 version '1.0-SNAPSHOT'
 
 def jarName = 'solr-indexer'

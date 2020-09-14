@@ -1,4 +1,4 @@
-group 'com.kkd.exercise.lucene'
+group 'com.kkd.study.lucene'
 version '1.0-SNAPSHOT'
 
 ext.luceneVersion = '5.5.4'

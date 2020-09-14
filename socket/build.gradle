@@ -1,4 +1,4 @@
-group 'com.kkd.exercise.socket'
+group 'com.kkd.study.socket'
 version '1.0-SNAPSHOT'
 
 dependencies {
