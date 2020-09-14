@@ -15,4 +15,4 @@ lucene/index/
 .gitsecret/keys/random_seed
 !*.secret
 hbase/target/
-algorithm/src/main/java/com/kkd/exercise/algorithm/amazon/second/
+algorithm/src/main/java/com/kkd/study/algorithm/amazon/second/
