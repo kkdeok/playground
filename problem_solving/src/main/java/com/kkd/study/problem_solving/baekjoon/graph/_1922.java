@@ -54,7 +54,7 @@ public class _1922 {
 			if (!visit[edge.e]) {
 				visit[edge.e] = true;
 				ans += edge.w;
-				q.addAll(map.get(edge.e));
+				q.addAll(map.getOrDefault(edge.e, new ArrayList<>()));
 			}
 		}
 		System.out.println(ans);
