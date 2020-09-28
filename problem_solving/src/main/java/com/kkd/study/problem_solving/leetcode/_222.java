@@ -4,19 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
+ * https://leetcode.com/problems/count-complete-tree-nodes/
  */
 public class _222 {
 	public class TreeNode {
@@ -33,7 +21,7 @@ public class _222 {
 
 	// Idea 1. - DFS or BFS to visit every nodes.
 	// 1. visit every node and count it.
-	// T.C: O(N + E / N*2)
+	// T.C: O(N*2)
 	public int countNodes(TreeNode root) {
 		if (root == null) {
 			return 0;
