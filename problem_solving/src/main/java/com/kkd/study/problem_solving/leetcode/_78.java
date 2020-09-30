@@ -9,6 +9,7 @@ import java.util.Queue;
  * https://leetcode.com/problems/subsets/
  */
 public class _78 {
+	private Queue<List<Integer>> queue;
 	// PROBLEM
 	// Given a set of distinct integers, nums, return all possible subsets (the power set).
 
