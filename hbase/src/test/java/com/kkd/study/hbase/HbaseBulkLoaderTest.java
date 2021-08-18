@@ -13,6 +13,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.serializer.KryoSerializer;
 import org.apache.spark.sql.SparkSession;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import scala.Tuple2;
 
@@ -26,6 +27,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Kideok Kim on 2019-02-21.
  */
+@Ignore
 public class HbaseBulkLoaderTest extends HbaseTestingUtility implements Serializable {
     private static final String KEY = "key";
     private static final List<Tuple4<String, String, String, String>> SAMPLES = Lists.newArrayList(
