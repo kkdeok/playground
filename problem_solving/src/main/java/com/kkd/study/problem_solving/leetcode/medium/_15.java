@@ -1,4 +1,4 @@
-package com.kkd.study.problem_solving.leetcode;
+package com.kkd.study.problem_solving.leetcode.medium;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * https://leetcode.com/problems/3sum/
  */
-public class ThreeSum {
+public class _15 {
 	public List<List<Integer>> threeSum(int[] nums) {
 		List<List<Integer>> res = new ArrayList<>();
 
