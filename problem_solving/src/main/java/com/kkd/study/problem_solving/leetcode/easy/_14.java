@@ -1,6 +1,9 @@
-package com.kkd.study.problem_solving.leetcode;
+package com.kkd.study.problem_solving.leetcode.easy;
 
-public class LongestCommonPrefix {
+/**
+ * https://leetcode.com/problems/longest-common-prefix/
+ */
+public class _14 {
 	public String longestCommonPrefix(String[] strs) {
 		int minLen = Integer.MAX_VALUE;
 
