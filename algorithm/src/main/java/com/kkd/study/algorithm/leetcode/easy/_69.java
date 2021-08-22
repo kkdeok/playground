@@ -1,5 +1,8 @@
 package com.kkd.study.algorithm.leetcode.easy;
 
+/**
+ * https://leetcode.com/problems/sqrtx/
+ */
 public class _69 {
 
 	public static int mySqrt(int x) {
