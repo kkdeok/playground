@@ -2,6 +2,9 @@ package com.kkd.study.algorithm.leetcode.easy;
 
 import com.kkd.study.algorithm.leetcode.common.TreeNode;
 
+/**
+ * https://leetcode.com/problems/minimum-depth-of-binary-tree/
+ */
 public class _111 {
 	public int minDepth(TreeNode root) {
 		if (root == null) return 0;

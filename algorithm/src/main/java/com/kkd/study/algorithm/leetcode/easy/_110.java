@@ -2,6 +2,9 @@ package com.kkd.study.algorithm.leetcode.easy;
 
 import com.kkd.study.algorithm.leetcode.common.TreeNode;
 
+/**
+ * https://leetcode.com/problems/balanced-binary-tree/
+ */
 public class _110 {
 	public boolean isBalanced(TreeNode root) {
 		return getHeight(root) != -1;
