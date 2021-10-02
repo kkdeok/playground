@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.traning;
+package com.kkd.study.algorithm.codingtest.baemin.unknown;
 
 import javafx.util.Pair;
 
