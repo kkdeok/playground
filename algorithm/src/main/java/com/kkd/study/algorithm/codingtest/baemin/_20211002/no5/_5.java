@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.baemin.exam_211002.no5;
+package com.kkd.study.algorithm.codingtest.baemin._20211002.no5;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

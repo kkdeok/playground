@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.amazon;
+package com.kkd.study.algorithm.codingtest.amazon;
 
 import java.util.*;
 import java.util.stream.Collectors;

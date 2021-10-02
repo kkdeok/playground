@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.baemin.exam_211002.no2;
+package com.kkd.study.algorithm.codingtest.baemin._20211002.no2;
 
 public class _2 {
 	public static void main(String[] args) {

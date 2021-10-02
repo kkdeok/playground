@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.baemin.exam_211002.no1;
+package com.kkd.study.algorithm.codingtest.baemin._20211002.no1;
 
 import java.util.ArrayList;
 import java.util.List;

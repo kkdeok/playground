@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.amazon.testcode;
+package com.kkd.study.algorithm.codingtest.amazon.testcode;
 
 import java.util.*;
 

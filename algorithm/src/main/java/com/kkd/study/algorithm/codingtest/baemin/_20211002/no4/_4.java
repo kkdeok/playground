@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.baemin.exam_211002.no4;
+package com.kkd.study.algorithm.codingtest.baemin._20211002.no4;
 
 import java.util.Arrays;
 import java.util.HashSet;
