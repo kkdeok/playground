@@ -1,5 +1,8 @@
 package com.kkd.study.algorithm.leetcode.easy;
 
+/**
+ * https://leetcode.com/problems/number-of-1-bits/
+ */
 public class _191 {
 	public static void main(String[] args) {
 		System.out.println(hammingWeight(11));
