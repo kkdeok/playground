@@ -1,5 +1,7 @@
 package com.kkd.study.algorithm.leetcode.easy;
 
+import java.util.Arrays;
+
 /**
  * https://leetcode.com/problems/number-of-1-bits/
  */
