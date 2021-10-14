@@ -84,7 +84,7 @@ public class Solution {
 
 	public static void main(String[] args) {
 		Solution solution = new Solution();
-		int result = solution.solution("ababa");
+		int result = solution.solution("abbabbbababbaab");
 		System.out.println(result);
 	}
 }
