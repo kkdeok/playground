@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.codingtest.amazon;
+package com.kkd.study.algorithm.codingtest.amazon.testcode;
 
 /**
  * Amazon Online Test

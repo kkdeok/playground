@@ -1,4 +1,4 @@
-package com.kkd.study.algorithm.codingtest.amazon;
+package com.kkd.study.algorithm.codingtest.amazon.testcode;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
