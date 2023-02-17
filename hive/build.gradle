@@ -31,12 +31,12 @@ dependencies {
     testImplementation 'org.scalatest:scalatest_2.11:3.0.0'
     testImplementation 'junit:junit:4.12'
 
-    compile group: 'org.apache.hive', name: 'hive-jdbc', version: '3.1.0'
-    compile group: 'org.apache.hive', name: 'hive-common', version: '3.1.0'
+    implementation group: 'org.apache.hive', name: 'hive-jdbc', version: '3.1.0'
+    implementation group: 'org.apache.hive', name: 'hive-common', version: '3.1.0'
 
-    compile group: 'com.facebook.presto', name: 'presto-jdbc', version: '0.223'
+    implementation group: 'com.facebook.presto', name: 'presto-jdbc', version: '0.223'
 
-    compile group: 'org.apache.spark', name: 'spark-core_2.12', version: sparkVersion
-    compile group: 'org.apache.spark', name: 'spark-sql_2.12', version: sparkVersion
-    compile group: 'org.apache.spark', name: 'spark-hive_2.12', version: sparkVersion
+    implementation group: 'org.apache.spark', name: 'spark-core_2.12', version: sparkVersion
+    implementation group: 'org.apache.spark', name: 'spark-sql_2.12', version: sparkVersion
+    implementation group: 'org.apache.spark', name: 'spark-hive_2.12', version: sparkVersion
 }

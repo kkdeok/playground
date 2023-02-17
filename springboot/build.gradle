@@ -7,17 +7,21 @@ buildscript {
     }
 }
 
+
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+}
+
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
 
 group 'com.kkd.study.springboot'
 version '1.0-SNAPSHOT'
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile('org.springframework.boot:spring-boot-starter-cache')
-    compile group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.3'
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation('org.springframework.boot:spring-boot-starter-cache')
+    implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.3'
 
-    compileOnly (group:'org.projectlombok', name:'lombok', version:'1.16.16')
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    implementation (group:'org.projectlombok', name:'lombok', version:'1.16.16')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
 }

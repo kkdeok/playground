@@ -6,12 +6,12 @@ buildscript {
 		mavenLocal()
 	}
 	dependencies {
-		classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
+		classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
 		classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.0'
 	}
 }
 
-def junitVersion = "4.12"
+def junitVersion = "5.9.2"
 
 subprojects {
 	apply plugin: 'java'
@@ -33,13 +33,13 @@ subprojects {
 	gradle.projectsEvaluated {
 		tasks.withType(JavaCompile) {
 			// Turn this on to see unchecked errors.
-			// options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+			// options.implementationrArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 		}
 	}
 
 	dependencies {
-		testCompile group: 'junit', name: 'junit', version: junitVersion
-		testCompile 'org.mockito:mockito-all:1.10.19'
+		testRuntimeOnly group: 'junit', name: 'junit', version: junitVersion
+		testRuntimeOnly 'org.mockito:mockito-all:1.10.19'
 	}
 
 	test {

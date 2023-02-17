@@ -5,17 +5,17 @@ def jarName = 'solr-indexer'
 def luceneVer = '5.5.4'
 
 dependencies {
-    compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
-    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
-    compile group: 'com.github.pcj', name: 'google-options', version: '1.0.0'
-    compile group: 'org.apache.lucene', name: 'lucene-core', version: luceneVer
-    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: luceneVer
-    compile group: 'org.apache.lucene', name: 'lucene-codecs', version: luceneVer
-    compile group: 'org.apache.lucene', name: 'lucene-misc', version: luceneVer
-    compile group: 'org.apache.lucene', name: 'lucene-backward-codecs', version: luceneVer
+    implementation group: 'com.google.guava', name: 'guava', version: '27.0-jre'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+    implementation group: 'com.github.pcj', name: 'google-options', version: '1.0.0'
+    implementation group: 'org.apache.lucene', name: 'lucene-core', version: luceneVer
+    implementation group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: luceneVer
+    implementation group: 'org.apache.lucene', name: 'lucene-codecs', version: luceneVer
+    implementation group: 'org.apache.lucene', name: 'lucene-misc', version: luceneVer
+    implementation group: 'org.apache.lucene', name: 'lucene-backward-codecs', version: luceneVer
 
-    compile group: 'org.apache.solr', name: 'solr-solrj', version: luceneVer
-    compile group: 'org.apache.solr', name: 'solr-core', version: luceneVer
+    implementation group: 'org.apache.solr', name: 'solr-solrj', version: luceneVer
+    implementation group: 'org.apache.solr', name: 'solr-core', version: luceneVer
 }
 
 shadowJar {

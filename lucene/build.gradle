@@ -5,15 +5,15 @@ ext.luceneVersion = '5.5.4'
 ext.jacksonVersion = '2.8.9'
 
 dependencies {
-    compile group: 'org.apache.lucene', name: 'lucene-core', version: "${luceneVersion}"
-    compile group: 'org.apache.lucene', name: 'lucene-queryparser', version: "${luceneVersion}"
-    compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: "${luceneVersion}"
-    compile group: 'org.apache.lucene', name: 'lucene-misc', version: "${luceneVersion}"
+    implementation group: 'org.apache.lucene', name: 'lucene-core', version: "${luceneVersion}"
+    implementation group: 'org.apache.lucene', name: 'lucene-queryparser', version: "${luceneVersion}"
+    implementation group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: "${luceneVersion}"
+    implementation group: 'org.apache.lucene', name: 'lucene-misc', version: "${luceneVersion}"
 
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${jacksonVersion}"
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: "${jacksonVersion}"
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: "${jacksonVersion}"
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
