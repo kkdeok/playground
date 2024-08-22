@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/kkdeok/playground/go/gomistakes/functionaloption"
+	"github.com/kkdeok/playground/go/gomistakes/variableshadow"
 )
 
 func main() {
-	functionaloption.Process()
+	variableshadow.Process()
 }
