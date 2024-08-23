@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/kkdeok/playground/go/gomistakes/variableshadow"
+	"github.com/kkdeok/playground/go/gomistakes/intoverflow"
 )
 
 func main() {
-	variableshadow.Process()
+	intoverflow.Process()
 }
