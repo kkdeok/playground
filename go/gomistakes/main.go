@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/kkdeok/playground/go/gomistakes/intoverflow"
+	"github.com/kkdeok/playground/go/gomistakes/ch29"
 )
 
 func main() {
-	intoverflow.Process()
+	ch29.Process()
 }

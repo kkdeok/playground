@@ -1,4 +1,4 @@
-package gomap
+package ch27
 
 import "fmt"
 
