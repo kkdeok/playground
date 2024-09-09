@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 	"unicode/utf8"
-
-	"golang.org/x/exp/utf8string"
-	"golang.org/x/text/runes"
 )
 
 func main() {
