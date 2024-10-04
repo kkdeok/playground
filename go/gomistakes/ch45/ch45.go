@@ -43,6 +43,6 @@ func main() {
 	a = &v
 	fmt.Println(a.Abs())
 
-	a = v
+	a = &v
 	fmt.Println(a.Abs())
 }
