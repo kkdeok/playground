@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	s := make([]int, 1)
+	// s := make([]int, 1)
+	s := make([]int, 0, 1)
 
 	go func() {
 		s1 := append(s, 1)
