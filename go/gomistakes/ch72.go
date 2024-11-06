@@ -2,26 +2,27 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-type Donation struct {
-	balance int
-	ch      chan int
-}
-
 func main() {
+	type Donation struct {
+		cond    *sync.Cond
+		balance int
+	}
+
 	donation := &Donation{
-		ch: make(chan int),
+		cond: sync.NewCond(&sync.Mutex{}),
 	}
 
 	f := func(goal int) {
-		for balance := range donation.ch {
-			if balance >= goal {
-				fmt.Printf("$%d goal reached\n", balance)
-				return
-			}
+		donation.cond.L.Lock()
+		for donation.balance < goal {
+			donation.cond.Wait()
 		}
+		fmt.Printf("%d$ goal reached\n", donation.balance)
+		donation.cond.L.Unlock()
 	}
 
 	go f(10)
@@ -29,7 +30,9 @@ func main() {
 
 	for {
 		time.Sleep(time.Second)
+		donation.cond.L.Lock()
 		donation.balance++
-		donation.ch <- donation.balance
+		donation.cond.L.Unlock()
+		donation.cond.Broadcast()
 	}
 }
