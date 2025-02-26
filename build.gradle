@@ -11,7 +11,7 @@ buildscript {
 	}
 }
 
-def junitVersion = "5.9.2"
+def junitVersion = "4.13.1"
 
 subprojects {
 	apply plugin: 'java'
