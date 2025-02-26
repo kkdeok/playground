@@ -21,4 +21,7 @@ dependencies {
 shadowJar {
 //    baseName = "${jarName}"
     zip64 true
+
+
+
 }
