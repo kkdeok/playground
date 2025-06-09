@@ -1,21 +1,4 @@
-package main
-
-import (
-	"bufio"
-	"fmt"
-	"os"
-)
-
-func main() {
-	var writer = bufio.NewWriter(os.Stdout)
-	defer writer.Flush()
-
-	// condition:
-	//  : covert all uppercase letter into lowercase letters
-	//  : removing all non-alphanumeric characters, which is except letters and numbers.
-
-	fmt.Fprintf(writer, "%v\n", isPalindrome(" "))
-}
+package leetcode
 
 func isPalindrome(s string) bool {
 	// condition:D

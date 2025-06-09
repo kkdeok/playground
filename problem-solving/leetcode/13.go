@@ -1,13 +1,8 @@
-package main
+package leetcode
 
 import (
-	"fmt"
 	"strings"
 )
-
-func main() {
-	fmt.Println(romanToInt("III"))
-}
 
 func romanToInt(s string) int {
 	karr := []string{

@@ -1,38 +1,8 @@
-package main
+package leetcode
 
 import (
-	"bufio"
 	"container/list"
-	"fmt"
-	"os"
 )
-
-func main() {
-	var writer = bufio.NewWriter(os.Stdout)
-	defer writer.Flush()
-
-	//ans := snakesAndLadders([][]int{
-	//	{-1, -1, -1, -1, -1, -1},
-	//	{-1, -1, -1, -1, -1, -1},
-	//	{-1, -1, -1, -1, -1, -1},
-	//	{-1, 35, -1, -1, 13, -1},
-	//	{-1, -1, -1, -1, -1, -1},
-	//	{-1, 15, -1, -1, -1, -1},
-	//})
-
-	//ans := snakesAndLadders([][]int{
-	//	{-1, -1},
-	//	{-1, 3},
-	//})
-
-	ans := snakesAndLadders([][]int{
-		{1, 1, -1},
-		{1, 1, 1},
-		{-1, 1, 1},
-	})
-
-	fmt.Fprintf(writer, "%d\n", ans)
-}
 
 const VISITED = -2
 

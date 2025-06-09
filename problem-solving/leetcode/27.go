@@ -1,18 +1,4 @@
-package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	nums := []int{}
-	val := 0
-	removeElement(nums, val)
-	fmt.Println(removeElement(nums, val))
-	//for i := 0; i < len(nums); i++ {
-	//	fmt.Println(nums[i])
-	//}
-}
+package leetcode
 
 const FAKE = 1000000
 

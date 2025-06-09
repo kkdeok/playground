@@ -1,11 +1,4 @@
-package main
-
-import "fmt"
-
-func main() {
-
-	fmt.Println(isSubsequence("abc", "ahbgdc")) // true
-}
+package leetcode
 
 func isSubsequence(s string, t string) bool {
 	if len(s) == 0 {
