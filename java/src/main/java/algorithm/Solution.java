@@ -1,16 +1,12 @@
 package algorithm;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Set;
 
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-
-        s.solution(3, new int[][]{{1,1,0}, {1,1,0}, {0,0,1}});
-        System.out.println(res);
+        s.solution(new int[][]{{1,1,0}, {1,1,0}, {0,0,1}});
     }
 
     public int solution(int[][] maps) {
