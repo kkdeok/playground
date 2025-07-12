@@ -1,54 +1,20 @@
 package algorithm;
 
-import java.util.LinkedList;
-import java.util.Queue;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Solution {
-    public static void main(String[] args) {
-        Solution s = new Solution();
-        s.solution(new int[][]{{1,1,0}, {1,1,0}, {0,0,1}});
+    // input validation:
+    public static int[] minimumN(int[] arr1, int[] arr2, int n) {
+        int[] merged = new int[arr1.length + arr2.length];
     }
 
-    public int solution(int[][] maps) {
-        int answer = -1;
-        int[] dx = new int[]{0, 0, 1, -1};
-        int[] dy = new int[]{-1, 1, 0, 0};
-
-        int n = maps.length;
-        int m = maps[0].length;
-        boolean[][] visited = new boolean[n][m];
-
-        Queue<Integer> xq = new LinkedList<>();
-        Queue<Integer> yq = new LinkedList<>();
-        Queue<Integer> cq = new LinkedList<>(); // count
-
-        xq.offer(0);
-        yq.offer(0);
-        cq.offer(1);
-
-        while (!xq.isEmpty()) {
-            int x = xq.poll();
-            int y = yq.poll();
-            int c = cq.poll();
-
-            if (x == n-1 && y == m-1) {
-                answer = c;
-                break;
-            }
-            for (int i=0 ; i<4 ; i++) {
-                int tempX = x + dx[i];
-                int tempY = y + dy[i];
-
-                if (tempX >= 0 && tempX <n && tempY >= 0 && tempY < m) {
-                    if (maps[tempX][tempY] == 1 && !visited[tempX][tempY]) {
-                        xq.offer(tempX);
-                        yq.offer(tempY);
-                        cq.offer(c + 1);
-                        visited[tempX][tempY] = true;
-                    }
-                }
-            }
-        }
-        return answer;
+    public static void main(String[] args) {
+        int[] arr1 = new int[]{1, 2, 4, 12, 14};
+        int[] arr2 = new int[]{3, 6, 7, 19};
+        int[] res = minimumN(arr1, arr2, 5);
+        System.out.println(Arrays.toString(res)); // [1, 2, 3, 4, 6]}
     }
 }
