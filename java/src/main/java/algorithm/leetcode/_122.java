@@ -1,6 +1,6 @@
 package algorithm.leetcode;
 
-public class _122 {
+class _Solution {
     // 탐욕법으로 접근
     // - 조건1: 현재의 선택이 미래의 선택에 영향을 주지 않는다.**
     // - 조건2: 부분 최적의 해가 모이면 전체 최적의 해가 된다. (Optimal Substructure)**
