@@ -1,6 +1,6 @@
 package algorithm.leetcode;
 
-class Solution {
+class _55 {
     // Because array size is quite a small, I thought I can resolve it
     // by graph algorithm. DFS with visited checking should work for here.
     // https://leetcode.com/problems/jump-game/description/?envType=study-plan-v2&envId=top-interview-150
@@ -24,5 +24,11 @@ class Solution {
             }
         }
         return false;
+    }
+
+    public static void main(String[] args) {
+        _55 solution = new _55();
+        System.out.println(solution.canJump(new int[]{2,3,1,1,4}));
+        System.out.println(solution.canJump(new int[]{3,2,1,0,4}));
     }
 }
