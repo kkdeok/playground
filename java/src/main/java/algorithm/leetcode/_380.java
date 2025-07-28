@@ -38,6 +38,8 @@ public class _380 {
             list.set(idx, last); // just override
             map.put(last, idx);
 
+            // for ArrayList, remove last element time complexity is O(1).
+            // Otherwise, O(n).
             list.remove(list.size() - 1);
             map.remove(val);
             return true;
