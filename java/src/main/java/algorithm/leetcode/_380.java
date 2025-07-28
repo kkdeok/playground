@@ -1,10 +1,10 @@
+package algorithm.leetcode;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 
 public class _380 {
     class RandomizedSet {        
@@ -49,16 +49,4 @@ public class _380 {
             return list.get(rand.nextInt(list.size()));
         }
     }
-
-    public static void main(String[] args) {
-        RandomizedSet randomizedSet = new RandomizedSet();
-        System.out.println(randomizedSet.insert(1));
-        System.out.println(randomizedSet.remove(2));
-        System.out.println(randomizedSet.insert(2));
-        System.out.println(randomizedSet.getRandom());
-        System.out.println(randomizedSet.remove(1));
-        System.out.println(randomizedSet.insert(2));
-        System.out.println(randomizedSet.getRandom());
-    }
-
 }
