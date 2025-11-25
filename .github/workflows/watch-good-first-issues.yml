@@ -1,0 +1,118 @@
+name: Watch Good First Issues in Other Repos
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch: {}
+
+jobs:
+  build-matrix:
+    runs-on: ubuntu-latest
+    environment: GOOD_FIRST_ISSUE_REPO   # ⬅ Environment 사용
+
+    outputs:
+      matrix: ${{ steps.parse.outputs.matrix }}
+
+    steps:
+      - name: Parse CSV variable into JSON matrix
+        id: parse
+        run: |
+          csv="${{ vars.GOOD_FIRST_ISSUE_REPO }}"
+
+          echo "CSV content:"
+          echo "$csv"
+
+          json="["
+
+          while IFS=',' read -r repo label; do
+            repo=$(echo "$repo" | xargs)
+            label=$(echo "$label" | xargs)
+            if [ -n "$repo" ] && [ -n "$label" ]; then
+              json="$json{\"repo\":\"$repo\",\"label\":\"$label\"},"
+            fi
+          done <<< "$csv"
+
+          json="${json%,}]"
+
+          echo "Generated JSON:"
+          echo "$json"
+          echo "matrix=$json" >> $GITHUB_OUTPUT
+
+  watch:
+    needs: build-matrix
+    runs-on: ubuntu-latest
+    environment: GOOD_FIRST_ISSUE_REPO
+
+    strategy:
+      matrix:
+        config: ${{ fromJSON(needs.build-matrix.outputs.matrix) }}
+
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    steps:
+      - name: Validate secrets
+        run: |
+          if [ -z "$GH_TOKEN" ]; then echo "❌ Missing GH_TOKEN"; exit 1; fi
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then echo "❌ Missing SLACK_WEBHOOK_URL"; exit 1; fi
+
+      - name: Install jq
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+
+      - name: Check and notify new issues
+        env:
+          TARGET_REPO: ${{ matrix.config.repo }}
+          TARGET_LABEL: ${{ matrix.config.label }}
+          SEARCH_WINDOW_MINUTES: "10"
+        run: |
+          echo "▶ Repo=${TARGET_REPO}, Label=${TARGET_LABEL}"
+
+          SINCE=$(date -u -d "$SEARCH_WINDOW_MINUTES minutes ago" '+%Y-%m-%dT%H:%M:%SZ')
+
+          QUERY="repo:${TARGET_REPO}+label:\"${TARGET_LABEL}\"+is:issue+state:open+created:>=$SINCE"
+
+          ENCODED_QUERY=$(python - <<EOF
+import urllib.parse
+print(urllib.parse.quote("""$QUERY"""))
+EOF
+)
+
+          API_URL="https://api.github.com/search/issues?q=${ENCODED_QUERY}&sort=created&order=asc&per_page=20"
+
+          RESPONSE=$(curl -sS -H "Authorization: Bearer $GH_TOKEN" \
+                          -H "Accept: application/vnd.github+json" \
+                          "$API_URL")
+
+          TOTAL=$(echo "$RESPONSE" | jq -r '.total_count')
+
+          if [ "$TOTAL" = "null" ] || [ "$TOTAL" -eq 0 ]; then
+            echo "⏺ No new issues for ${TARGET_REPO}"
+            exit 0
+          fi
+
+          echo "✅ Found $TOTAL new issues"
+
+          echo "$RESPONSE" | jq -c '.items[]' | while read -r issue; do
+            title=$(echo "$issue" | jq -r '.title')
+            url=$(echo "$issue" | jq -r '.html_url')
+            created_at=$(echo "$issue" | jq -r '.created_at')
+            number=$(echo "$issue" | jq -r '.number')
+            user=$(echo "$issue" | jq -r '.user.login')
+
+            text="🆕 *New issue with \`${TARGET_LABEL}\`*\n"
+            text="${text}📦 Repo: \`${TARGET_REPO}\`\n"
+            text="${text}🔢 Issue: #${number}\n"
+            text="${text}👤 Author: \`${user}\`\n"
+            text="${text}🕒 Created: ${created_at}\n\n"
+            text="${text}📝 ${title}\n"
+            text="${text}🔗 ${url}"
+
+            payload=$(jq -n --arg text "$text" '{text: $text}')
+
+            curl -sS -X POST -H "Content-Type: application/json" \
+              --data "$payload" \
+              "$SLACK_WEBHOOK_URL" >/dev/null
+          done
