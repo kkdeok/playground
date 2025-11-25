@@ -53,7 +53,7 @@ jobs:
         config: ${{ fromJSON(needs.build-matrix.outputs.matrix) }}
 
     env:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.WATCH_FIRST_ISSUE_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
     steps:
