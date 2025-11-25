@@ -54,7 +54,7 @@ jobs:
 
     env:
       GH_TOKEN: ${{ secrets.WATCH_FIRST_ISSUE_TOKEN }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      SLACK_WEBHOOK_URL: ${{ secrets.WATCH_FIRST_ISSUE_SLACK_WEBHOOK_URL }}
 
     steps:
       - name: Validate secrets
